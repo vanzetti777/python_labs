@@ -61,4 +61,4 @@ for i in range(n):
         zao+=1
 print(f'out: {och},{zao}')
 ```
-![alt text](image/06.png)
+![alt text](image/image.png)
