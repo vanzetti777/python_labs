@@ -42,10 +42,11 @@ print(f"{m//60}:{m-(60*(m//60)):02d}")
 ## Задание 5
 ```python
 name=str(input("ФИО: "))
-print(f"инициалы: {(name.split()[0])[0]}{(name.split()[1])[0]}{(name.split()[2])[0]}")
-print(f"длина: {len(name)}")
+print(f"инициалы: {(name.split()[0])[0]}{(name.split()[1])[0]}{(name.split()[2])[0]}.")
+name=name.replace(' ','')
+print(f"длина: {len(name)+2}")
 ```
-![alt text](image/05.png)
+![alt text](<image/image copy.png>)
 ## Задание 6
 ```python
 n=int(input('in_1: '))
