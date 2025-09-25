@@ -7,10 +7,6 @@
 #     a=tuple(b)
 #     s1=[]
 #     for i in a:
-#         # if '.' in i:
-#         #     s1.append(float(i))
-#         # else:
-#         #     s1.append(int(i))
 #         s1.append(i)
 #     if len(s1)==0:
 #         print('ValueError')
@@ -25,25 +21,25 @@
 
 
 
-a=[3, 1, 2, 1, 3] 
-b=[]
-c=[-1, -1, 0, 2, 2]
-d=[1.0, 1, 2.5, 2.5, 0]
-def f(a):
-    g=[]
-    h=[]
-    for i in a:
-        if type(i)==int:
-            h.append(i)
-        else:
-            g.append(i)
-    res1=[x for x in g if int(x) in h]
-    res2=[x for x in h if float(x) not in g]
-    print(sorted(set(res1+res2+g)))
-print(f(a))
-print(f(b))
-print(f(c))
-print(f(d))
+# a=[3, 1, 2, 1, 3] 
+# b=[]
+# c=[-1, -1, 0, 2, 2]
+# d=[1.0, 1, 2.5, 2.5, 0]
+# def f(a):
+#     g=[]
+#     h=[]
+#     for i in a:
+#         if type(i)==int:
+#             h.append(i)
+#         else:
+#             g.append(i)
+#     res1=[x for x in g if int(x) in h]
+#     res2=[x for x in h if float(x) not in g]
+#     print(sorted(set(res1+res2+g)))
+# print(f(a))
+# print(f(b))
+# print(f(c))
+# print(f(d))
 
 
 
