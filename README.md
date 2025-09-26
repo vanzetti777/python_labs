@@ -222,6 +222,7 @@ print(f(d))
 ![alt text](<image2/image 2.2.3.png>)
 
 ##Задание 3
+
 ```python
 def f(x):
     if len(x) != 3:
