@@ -224,6 +224,8 @@ print(f(d))
 ##Задание 3
 ```python
 def f(x):
+    if len(x) != 3:
+        return ValueError
     if type(x[0]) == str:
         e=x[0].split()
         if len(e)==2:
@@ -238,9 +240,11 @@ a = ("Иванов Иван Иванович", "BIVT-25", 4.6)
 b=("Петров Пётр", "IKBO-12", 5.0) 
 c=("Петров Пётр Петрович", "IKBO-12", 5.0) 
 d=("  сидорова  анна   сергеевна ", "ABB-01", 3.999)
+e=( "ABB-01", 3.999)
 print(f(a))
 print(f(b)) 
 print(f(c)) 
 print(f(d))  
+print(f(e)) 
 ```
 ![alt text](<image2/image 2.3.png>)
