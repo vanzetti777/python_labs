@@ -8,7 +8,7 @@ b=int(input("Возраст: "))
 c=b+1
 print(f"Привет, ",a,"! Через год тебе будет",c)
 ```
-![alt text](image/01.png)
+![alt text](image1/01.png)
 ## Задание 2
 ```python
 a=input('a: ')
@@ -19,7 +19,7 @@ b=b.replace(',','.')
 b=float(b)
 print(f"sum={a+b}; avg={(a+b)/2:.2f}")
 ```
-![alt text](image/02.png)
+![alt text](image1/02.png)
 ## Задание 3
 ```python
 price=float(input('цена, р: '))
@@ -32,13 +32,13 @@ print(f"база после скидки:{base:.2f} р")
 print(f"ндс:{vat_amount:.2f} р")
 print(f"итого к оплате:{total:.2f} р")
 ```
-![alt text](image/03.png)
+![alt text](image1/03.png)
 ## Задание 4
 ```python
 m=int(input("минуты: "))
 print(f"{m//60}:{m-(60*(m//60)):02d}")
 ```
-![alt text](image/04.png)
+![alt text](image1/04.png)
 ## Задание 5
 ```python
 name=str(input("ФИО: "))
@@ -46,7 +46,7 @@ print(f"инициалы: {(name.split()[0])[0]}{(name.split()[1])[0]}{(name.spl
 name=name.replace(' ','')
 print(f"длина: {len(name)+2}")
 ```
-![alt text](<image/image copy.png>)
+![alt text](<image1/image copy.png>)
 ## Задание 6
 ```python
 n=int(input('in_1: '))
@@ -62,4 +62,84 @@ for i in range(n):
         zao+=1
 print(f'out: {och},{zao}')
 ```
-![alt text](image/image.png)
+![alt text](image1/image.png)
+
+
+# Лабораторная работа 2
+## Задание 1
+```python
+a=[3,-1,5,5,0]
+b=[42]
+c=[-5, -2, -9]
+d=[]
+e=[1.5, 2, 2.0, -3.1]
+def f(b):
+    a=tuple(b)
+    s1=[]
+    for i in a:
+        s1.append(i)
+    if len(s1)==0:
+        print('ValueError')
+    else:
+        s2=(min(s1),max(s1))
+        print(s2)
+print(f(a))
+print(f(b))
+print(f(c))
+print(f(d))
+print(f(e))
+```
+
+![alt text](<image2/image 2.1.1.png>)
+
+```python
+a=[3, 1, 2, 1, 3] 
+b=[]
+c=[-1, -1, 0, 2, 2]
+d=[1.0, 1, 2.5, 2.5, 0]
+def f(a):
+    g=[]
+    h=[]
+    for i in a:
+        if type(i)==int:
+            h.append(i)
+        else:
+            g.append(i)
+    res1=[x for x in g if int(x) in h]
+    res2=[x for x in h if float(x) not in g]
+    print(sorted(set(res1+res2+g)))
+print(f(a))
+print(f(b))
+print(f(c))
+print(f(d))
+```
+![alt text](<image2/image 2.1.2.png>)
+
+```python
+a=[[1, 2], [3, 4]]
+b=([1, 2], (3, 4, 5))
+c=[[1], [], [2, 3]]
+d=[[1, 2], "ab"]
+
+def f(a):
+    x=[]
+    y=[]
+    k=0
+    for i in a:
+        for b in i:
+            x.append(b)
+            if type(b)==int:
+                k+=1
+            if k==len(x):
+                y.append(b)
+            else:
+                print('TypeError')
+    if k==len(x):
+        print(y)
+
+print(f(a))
+print(f(b))
+print(f(c))
+print(f(d))
+```
+![alt text](<image2/image 2.1.3.png>)
