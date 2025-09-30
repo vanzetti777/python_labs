@@ -68,79 +68,79 @@ print(f'out: {och},{zao}')
 # Лабораторная работа 2
 ## Задание 1
 ```python
-a=[3,-1,5,5,0]
-b=[42]
-c=[-5, -2, -9]
-d=[]
-e=[1.5, 2, 2.0, -3.1]
-def f(b):
-    a=tuple(b)
-    s1=[]
-    for i in a:
-        s1.append(i)
-    if len(s1)==0:
+test1=[3,-1,5,5,0]
+test2=[42]
+test3=[-5, -2, -9]
+test4=[]
+test5=[1.5, 2, 2.0, -3.1]
+def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:
+    list1=[]
+    for i in nums:
+        list1.append(i)
+    if len(list1)==0:
         print('ValueError')
     else:
-        s2=(min(s1),max(s1))
-        print(s2)
-print(f(a))
-print(f(b))
-print(f(c))
-print(f(d))
-print(f(e))
+        list2=(min(list1),max(list1))
+        print(list2)
+
+print(min_max(test1))
+print(min_max(test2))
+print(min_max(test3))
+print(min_max(test4))
+print(min_max(test5))
 ```
 
 ![alt text](<image2/image 2.1.1.png>)
 
 ```python
-a=[3, 1, 2, 1, 3] 
-b=[]
-c=[-1, -1, 0, 2, 2]
-d=[1.0, 1, 2.5, 2.5, 0]
-def f(a):
-    g=[]
-    h=[]
-    for i in a:
+test1=[3, 1, 2, 1, 3] 
+test2=[]
+test3=[-1, -1, 0, 2, 2]
+test4=[1.0, 1, 2.5, 2.5, 0]
+def unique_sorted(nums: list[float | int]) -> list[float | int]:
+    list_int=[]
+    list_float=[]
+    for i in nums:
         if type(i)==int:
-            h.append(i)
+            list_int.append(i)
         else:
-            g.append(i)
-    res1=[x for x in g if int(x) in h]
-    res2=[x for x in h if float(x) not in g]
-    print(sorted(set(res1+res2+g)))
-print(f(a))
-print(f(b))
-print(f(c))
-print(f(d))
+            list_float.append(i)
+    res1=[x for x in list_float if int(x) in list_int]
+    res2=[x for x in list_int if float(x) not in list_float]
+    print(sorted(set(res1+res2+list_float)))
+print(unique_sorted(test1))
+print(unique_sorted(test2))
+print(unique_sorted(test3))
+print(unique_sorted(test4))
 ```
 ![alt text](<image2/image 2.1.2.png>)
 
 ```python
-a=[[1, 2], [3, 4]]
-b=([1, 2], (3, 4, 5))
-c=[[1], [], [2, 3]]
-d=[[1, 2], "ab"]
+test1=[[1, 2], [3, 4]]
+test2=([1, 2], (3, 4, 5))
+test3=[[1], [], [2, 3]]
+test4=[[1, 2], "ab"]
 
-def f(a):
-    x=[]
-    y=[]
-    k=0
-    for i in a:
-        for b in i:
-            x.append(b)
-            if type(b)==int:
-                k+=1
-            if k==len(x):
-                y.append(b)
+def flatten(mat: list[list | tuple]) -> list:
+    list1=[]
+    list2=[]
+    count=0
+    for enum1 in mat:
+        for enum2 in enum1:
+            list1.append(enum2)
+            if type(enum2)==int:
+                count+=1
+            if count==len(list1):
+                list2.append(enum2)
             else:
                 print('TypeError')
-    if k==len(x):
-        print(y)
+    if count==len(list1):
+        print(list2)
 
-print(f(a))
-print(f(b))
-print(f(c))
-print(f(d))
+print(flatten(test1))
+print(flatten(test2))
+print(flatten(test3))
+print(flatten(test4))
 ```
 ![alt text](<image2/image 2.1.3.png>)
 
