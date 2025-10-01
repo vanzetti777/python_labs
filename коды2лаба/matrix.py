@@ -33,35 +33,35 @@ print(f2(d))
 print(f4(e))
 
 
-a=[[1, 2, 3], [4, 5, 6]] 
-b=[[-1, 1], [10, -10]] 
-c=[[0, 0], [0, 0]] 
-d=[[1, 2], [3]]
-def f(x):
-    for i in range(len(x)-1):
-        if len(x[i])!=len(x[i+1]):
+test1=[[1, 2, 3], [4, 5, 6]] 
+test2=[[-1, 1], [10, -10]] 
+test3=[[0, 0], [0, 0]] 
+test4=[[1, 2], [3]]
+def row_sums(mat: list[list[float | int]]) -> list[float]:
+    for i in range(len(mat)-1):
+        if len(mat[i])!=len(mat[i+1]):
             print("ValueError")
         else:
-            return [sum(x[i]),sum(x[i+1])]
-print(f(a))
-print(f(b))
-print(f(c))
-print(f(d))      
+            return [sum(mat[i]),sum(mat[i+1])]
+print(row_sums(test1))
+print(row_sums(test2))
+print(row_sums(test3))
+print(row_sums(test4))      
 
-a=[[1, 2, 3], [4, 5, 6]]
-b=[[-1, 1], [10, -10]] 
-c=[[0, 0], [0, 0]] 
-d=[[1, 2], [3]]
-def f(x):
-    for i in range(len(x)-1):
-        if len(x[i])!=len(x[i+1]):
+test1=[[1, 2, 3], [4, 5, 6]]
+test2=[[-1, 1], [10, -10]] 
+test3=[[0, 0], [0, 0]] 
+test4=[[1, 2], [3]]
+def col_sums(mat: list[list[float | int]]) -> list[float]:
+    for enum1 in range(len(mat)-1):
+        if len(mat[enum1])!=len(mat[enum1+1]):
             print("ValueError")
         else:
-            h = []
-            for j in zip(*x): 
-                h.append(sum(j))
-    return h
-print(f(a))
-print(f(b))
-print(f(c))
-print(f(d))
+            list1 = []
+            for enum2 in zip(*mat): 
+                list1.append(sum(enum2))
+    return list1
+print(col_sums(test1))
+print(col_sums(test2))
+print(col_sums(test3))
+print(col_sums(test4))

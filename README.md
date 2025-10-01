@@ -74,15 +74,12 @@ test3=[-5, -2, -9]
 test4=[]
 test5=[1.5, 2, 2.0, -3.1]
 def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:
-    list1=[]
-    for i in nums:
-        list1.append(i)
-    if len(list1)==0:
+    #проверка на пустой список
+    if len(nums)==0:
         print('ValueError')
     else:
-        list2=(min(list1),max(list1))
+        list2=(min(nums),max(nums))
         print(list2)
-
 print(min_max(test1))
 print(min_max(test2))
 print(min_max(test3))
@@ -98,15 +95,17 @@ test2=[]
 test3=[-1, -1, 0, 2, 2]
 test4=[1.0, 1, 2.5, 2.5, 0]
 def unique_sorted(nums: list[float | int]) -> list[float | int]:
+    #создаем 2 списка
     list_int=[]
     list_float=[]
+    #разделяю инт и флоат 
     for i in nums:
         if type(i)==int:
             list_int.append(i)
         else:
             list_float.append(i)
-    res1=[x for x in list_float if int(x) in list_int]
-    res2=[x for x in list_int if float(x) not in list_float]
+    res1=[x for x in list_float if int(x) in list_int]#добавляю флоат если он в инт значении есть в инт списке
+    res2=[x for x in list_int if float(x) not in list_float]#добавляю инт если во флоат его нет
     print(sorted(set(res1+res2+list_float)))
 print(unique_sorted(test1))
 print(unique_sorted(test2))
@@ -122,12 +121,16 @@ test3=[[1], [], [2, 3]]
 test4=[[1, 2], "ab"]
 
 def flatten(mat: list[list | tuple]) -> list:
+    #создаю 2 списка чтобы все забрать в списки
     list1=[]
     list2=[]
     count=0
+    #перебираю элементы списка/кортежа
     for enum1 in mat:
+        #перебираю элементы в элементах..и все добавляю в 1 список
         for enum2 in enum1:
             list1.append(enum2)
+            #проверка на матричность элемента
             if type(enum2)==int:
                 count+=1
             if count==len(list1):
@@ -183,75 +186,83 @@ print(f4(e))
 ![alt text](<image2/image 2.2.1.png>)
 
 ```python
-a=[[1, 2, 3], [4, 5, 6]] 
-b=[[-1, 1], [10, -10]] 
-c=[[0, 0], [0, 0]] 
-d=[[1, 2], [3]]
-def f(x):
-    for i in range(len(x)-1):
-        if len(x[i])!=len(x[i+1]):
+test1=[[1, 2, 3], [4, 5, 6]] 
+test2=[[-1, 1], [10, -10]] 
+test3=[[0, 0], [0, 0]] 
+test4=[[1, 2], [3]]
+def row_sums(mat: list[list[float | int]]) -> list[float]:
+    #проверяю на одинак длину элементов
+    for i in range(len(mat)-1):
+        if len(mat[i])!=len(mat[i+1]):
             print("ValueError")
         else:
-            return [sum(x[i]),sum(x[i+1])]
-print(f(a))
-print(f(b))
-print(f(c))
-print(f(d))      
+            #беру сумму по элементам списка
+            return [sum(mat[i]),sum(mat[i+1])]
+print(row_sums(test1))
+print(row_sums(test2))
+print(row_sums(test3))
+print(row_sums(test4))          
 ```
 ![alt text](<image2/image 2.2.2.png>)
 
 ```python
-a=[[1, 2, 3], [4, 5, 6]]
-b=[[-1, 1], [10, -10]] 
-c=[[0, 0], [0, 0]] 
-d=[[1, 2], [3]]
-def f(x):
-    for i in range(len(x)-1):
-        if len(x[i])!=len(x[i+1]):
+test1=[[1, 2, 3], [4, 5, 6]]
+test2=[[-1, 1], [10, -10]] 
+test3=[[0, 0], [0, 0]] 
+test4=[[1, 2], [3]]
+def col_sums(mat: list[list[float | int]]) -> list[float]:
+    #проверяю пары из списка на одинак длину
+    for enum1 in range(len(mat)-1):
+        if len(mat[enum1])!=len(mat[enum1+1]):
             print("ValueError")
         else:
-            h = []
-            for j in zip(*x): 
-                h.append(sum(j))
-    return h
-print(f(a))
-print(f(b))
-print(f(c))
-print(f(d))
+            #беру сумму по каждому столбцу
+            list1 = []
+            for enum2 in zip(*mat): 
+                list1.append(sum(enum2))
+    return list1
+print(col_sums(test1))
+print(col_sums(test2))
+print(col_sums(test3))
+print(col_sums(test4))
 ```
 ![alt text](<image2/image 2.2.3.png>)
 
 ##Задание 3
 
 ```python
-def f(x):
-    if len(x) != 3:
+def format_record(rec: tuple[str, str, float]) -> str:
+    #проверяю на пустые ячейки
+    if len(rec) != 3:
         return ValueError
-    if not isinstance(x[2], (int, float)):
+    #проверяю гпа на правильность
+    if not isinstance(rec[2], (int, float)):
         return TypeError
-    if x[2] < 0 or x[2] > 5.0:
+    if rec[2] < 0 or rec[2] > 5.0:
         return ValueError
-    if type(x[0]) == str:
-        e=x[0].split()
+    #проверяю фио, разделяю и беру только большие буквы
+    if type(rec[0]) == str:
+        e=rec[0].split()
+        #если фи
         if len(e)==2:
             f=e[0].capitalize()+' '+(e[1].capitalize())[0]+'.'
         else:
             f=e[0].capitalize()+' '+ (e[1].capitalize())[0]+'.'+(e[2].capitalize())[0]+'.'
-        res=f+','+' гр.'+x[1] + ', ' + f"{x[2]:.2f}"
+        res=f+','+' гр.'+rec[1] + ', ' + f"{rec[2]:.2f}"
         print(res)
         
 
-a = ("Иванов Иван Иванович", "BIVT-25", 4.6)
-b=("Петров Пётр", "IKBO-12", 5.0) 
-c=("Петров Пётр Петрович", "IKBO-12", 5.0) 
-d=("  сидорова  анна   сергеевна ", "ABB-01", 3.999)
-e=( "ABB-01", 3.999)
-i=("Петров Пётр Петрович", "IKBO-12", 6.0) 
-print(f(a))
-print(f(b)) 
-print(f(c)) 
-print(f(d))  
-print(f(e)) 
-print(f(i)) 
+test1 = ("Иванов Иван Иванович", "BIVT-25", 4.6)
+test2=("Петров Пётр", "IKBO-12", 5.0) 
+test3=("Петров Пётр Петрович", "IKBO-12", 5.0) 
+test4=("  сидорова  анна   сергеевна ", "ABB-01", 3.999)
+test5=( "ABB-01", 3.999)
+test6=("Петров Пётр Петрович", "IKBO-12", 6.0) 
+print(format_record(test1))
+print(format_record(test2)) 
+print(format_record(test3)) 
+print(format_record(test4))  
+print(format_record(test5)) 
+print(format_record(test6)) 
 ```
 ![alt text](<image2/image 2.3.png>)
