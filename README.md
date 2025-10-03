@@ -222,7 +222,7 @@ print(col_sums(test4))
 ```
 ![alt text](<image2/image 2.2.3.png>)
 
-##Задание 3
+## Задание 3
 
 ```python
 def format_record(rec: tuple[str, str, float]) -> str:
