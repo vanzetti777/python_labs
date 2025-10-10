@@ -197,7 +197,7 @@ print(row_sums(test2))
 print(row_sums(test3))
 print(row_sums(test4))          
 ```
-![alt text](<image2/image 2.2.2.png>)
+![!\[alt text\](<image2/image 2.2.2.png>)](<img/image2/image 2.2.2.png>)
 
 ```python
 test1=[[1, 2, 3], [4, 5, 6]]
@@ -220,7 +220,7 @@ print(col_sums(test2))
 print(col_sums(test3))
 print(col_sums(test4))
 ```
-![alt text](<image2/image 2.2.3.png>)
+![img/image2/image 2.2.3.png](<img/image2/image 2.2.3.png>)
 
 ## Задание 3
 
@@ -259,9 +259,9 @@ print(format_record(test4))
 print(format_record(test5)) 
 print(format_record(test6)) 
 ```
-![alt text](<image2/image 2.3.png>)
+![img/image2/image 2.3.png](<img/image2/image 2.3.png>)
 
-# Лабораторная работа 2
+# Лабораторная работа 3
 ## Задание 1
 ```python
 testcase1="ПрИвЕт\nМИр\t"
