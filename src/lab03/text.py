@@ -30,6 +30,8 @@ def tokenize(text: str) -> list[str]:
     tockens = (re.findall(shablon,normalize(text)))
     return tockens
 
+
+
 print(tokenize(testcase1))
 print(tokenize(testcase2))
 print(tokenize(testcase3))
