@@ -39,7 +39,7 @@ print(tokenize(testcase5))
 testcase1=["a","b","a","c","b","a"]
 testcase2=["bb","aa","bb","aa","cc"]
 
-from collections import*
+# from collections import*
 def count_freq(tokens: list[str]) -> dict[str, int]:
     fdict={}
     #создаем словарь
