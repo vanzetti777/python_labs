@@ -318,10 +318,8 @@ def count_freq(tokens: list[str]) -> dict[str, int]:
 def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
     #превращем в представление словаря в списке
     items = list(freq.items())
-    
     # Сортируем сначала по убыванию частоты, потом по алф
     sorted_items = sorted(items, key=lambda x: (-x[1], x[0]))
-    
     # Возвращаем первые N элементов
     return sorted_items[:n]
 
