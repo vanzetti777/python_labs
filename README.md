@@ -272,12 +272,9 @@ import re
 def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
     # r'\s+' заменяем все все лишние элементы, заменяет на пробел
     text= re.sub(r'\s+', ' ', text).strip()
-    if casefold:
-        text=text.casefold()
-        if yo2e:
-            text=text.replace('ё','e')
-
-            return text
+    text=text.casefold()
+    text=text.replace('ё','e')
+    return text
     
 print(normalize(testcase1))
 print(normalize(testcase2))
