@@ -1,40 +1,40 @@
-# testcase1="ПрИвЕт\nМИр\t"
-# testcase2="ёжик, Ёлка" 
-# testcase3="Hello\r\nWorld" 
-# testcase4="  двойные   пробелы  "
-# import re
-# def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
-#     # r'\s+' заменяем все все лишние элементы, заменяет на пробел
-#     text= re.sub(r'\s+', ' ', text).strip()
-#     if casefold:
-#         text=text.casefold()
-#         if yo2e:
-#             text=text.replace('ё','e')
+testcase1="ПрИвЕт\nМИр\t"
+testcase2="ёжик, Ёлка" 
+testcase3="Hello\r\nWorld" 
+testcase4="  двойные   пробелы  "
+import re
+def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
+    # r'\s+' заменяем все все лишние элементы, заменяет на пробел
+    text= re.sub(r'\s+', ' ', text).strip()
+    if casefold:
+        text=text.casefold()
+        if yo2e:
+            text=text.replace('ё','e')
 
-#             return text
+            return text
     
-# print(normalize(testcase1))
-# print(normalize(testcase2))
-# print(normalize(testcase3))
-# print(normalize(testcase4))
+print(normalize(testcase1))
+print(normalize(testcase2))
+print(normalize(testcase3))
+print(normalize(testcase4))
 
-# testcase1="привет мир" 
-# testcase2="hello,world!!!"
-# testcase3="по-настоящему круто" 
-# testcase4="2025 год"
-# testcase5="emoji 😀 не слово"
-# import re
-# def tokenize(text: str) -> list[str]:
-#     shablon=r'\w+(?:-\w+)*'
-#     # ищет все по шаблону из норм текста 
-#     tockens = (re.findall(shablon,normalize(text)))
-#     return tockens
+testcase1="привет мир" 
+testcase2="hello,world!!!"
+testcase3="по-настоящему круто" 
+testcase4="2025 год"
+testcase5="emoji 😀 не слово"
+import re
+def tokenize(text: str) -> list[str]:
+    shablon=r'\w+(?:-\w+)*'
+    # ищет все по шаблону из норм текста 
+    tockens = (re.findall(shablon,normalize(text)))
+    return tockens
 
-# print(tokenize(testcase1))
-# print(tokenize(testcase2))
-# print(tokenize(testcase3))
-# print(tokenize(testcase4))
-# print(tokenize(testcase5))
+print(tokenize(testcase1))
+print(tokenize(testcase2))
+print(tokenize(testcase3))
+print(tokenize(testcase4))
+print(tokenize(testcase5))
 
 
 testcase1=["a","b","a","c","b","a"]
