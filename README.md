@@ -8,7 +8,7 @@ b=int(input("Возраст: "))
 c=b+1
 print(f"Привет, ",a,"! Через год тебе будет",c)
 ```
-![alt text](image1/01.png)
+![!\[alt text\](image1/01.png)](img/image1/01.png)
 ## Задание 2
 ```python
 a=input('a: ')
@@ -19,7 +19,7 @@ b=b.replace(',','.')
 b=float(b)
 print(f"sum={a+b}; avg={(a+b)/2:.2f}")
 ```
-![alt text](image1/02.png)
+![!\[alt text\](image1/02.png)](img/image1/02.png)
 ## Задание 3
 ```python
 price=float(input('цена, р: '))
@@ -32,13 +32,13 @@ print(f"база после скидки:{base:.2f} р")
 print(f"ндс:{vat_amount:.2f} р")
 print(f"итого к оплате:{total:.2f} р")
 ```
-![alt text](image1/03.png)
+![!\[alt text\](image1/03.png)](img/image1/03.png)
 ## Задание 4
 ```python
 m=int(input("минуты: "))
 print(f"{m//60}:{m-(60*(m//60)):02d}")
 ```
-![alt text](image1/04.png)
+![!\[alt text\](image1/04.png)](img/image1/04.png)
 ## Задание 5
 ```python
 name=str(input("ФИО: "))
@@ -46,7 +46,7 @@ print(f"инициалы: {(name.split()[0])[0]}{(name.split()[1])[0]}{(name.spl
 name=name.replace(' ','')
 print(f"длина: {len(name)+2}")
 ```
-![alt text](<image1/image copy.png>)
+![!\[alt text\](<image1/image copy.png>)](<img/image1/image copy.png>)
 ## Задание 6
 ```python
 n=int(input('in_1: '))
@@ -62,7 +62,7 @@ for i in range(n):
         zao+=1
 print(f'out: {och},{zao}')
 ```
-![alt text](image1/image.png)
+![!\[alt text\](image1/image.png)](img/image1/image.png)
 
 
 # Лабораторная работа 2
@@ -87,7 +87,7 @@ print(min_max(test4))
 print(min_max(test5))
 ```
 
-![alt text](<image2/image 2.1.1.png>)
+![!\[alt text\](<image2/image 2.1.1.png>)](<img/image2/image 2.1.1.png>)
 
 ```python
 test1=[3, 1, 2, 1, 3] 
@@ -112,7 +112,7 @@ print(unique_sorted(test2))
 print(unique_sorted(test3))
 print(unique_sorted(test4))
 ```
-![alt text](<image2/image 2.1.2.png>)
+![!\[alt text\](<image2/image 2.1.2.png>)](<img/image2/image 2.1.2.png>)
 
 ```python
 test1=[[1, 2], [3, 4]]
@@ -145,7 +145,7 @@ print(flatten(test2))
 print(flatten(test3))
 print(flatten(test4))
 ```
-![alt text](<image2/image 2.1.3.png>)
+![!\[alt text\](<image2/image 2.1.3.png>)](<img/image2/image 2.1.3.png>)
 
 ##Задание 2
 ```python
@@ -177,7 +177,7 @@ print(transpose(test3))
 print(transpose(test4))
 print(transpose(test5))
 ```
-![alt text](<image2/image 2.2.1.png>)
+![!\[alt text\](<image2/image 2.2.1.png>)](<img/image2/image 2.2.1.png>)
 
 ```python
 test1=[[1, 2, 3], [4, 5, 6]] 
