@@ -286,6 +286,7 @@ testcase2="hello,world!!!"
 testcase3="по-настоящему круто" 
 testcase4="2025 год"
 testcase5="emoji 😀 не слово"
+
 import re
 def tokenize(text: str) -> list[str]:
     shablon=r'\w+(?:-\w+)*'
@@ -293,14 +294,11 @@ def tokenize(text: str) -> list[str]:
     tockens = (re.findall(shablon,normalize(text)))
     return tockens
 
-
-
 print(tokenize(testcase1))
 print(tokenize(testcase2))
 print(tokenize(testcase3))
 print(tokenize(testcase4))
 print(tokenize(testcase5))
-
 
 testcase1=["a","b","a","c","b","a"]
 testcase2=["bb","aa","bb","aa","cc"]
