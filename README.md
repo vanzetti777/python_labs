@@ -353,6 +353,7 @@ for i in top:
 # Лабораторная работа 3
 ## Задание 1
 ### функции
+НО СТОИТ ЧИТАТЬ ПОСТРОЧНО! ЕСЛИ БОЛЬШОЙ ФАЙЛ
 ```python
 from pathlib import Path
 import csv
@@ -407,7 +408,7 @@ Path("data/input.txt").write_text(test_content, encoding="utf-8")
 ```python
 str_empty=read_text("data/input_empty.txt")
 strUTF=read_text("data/input.txt")
-strcp1251=(read_text("data/input2.txt",encoding='windows-1251'))
+strcp1251=(read_text("data/input.txt",encoding='windows-1251'))
 print(str_empty)
 print(strUTF)
 print(strcp1251)
@@ -416,6 +417,7 @@ strcp1251_unicodeerror =(read_text("data/input2.txt",encoding='utf-32'))
 print(strcp1251_unicodeerror)#UnicodeDecodeError
 print(read_text("data/input_notfound.txt"))#FileNotFoundError
 ```
+1 строчка пусто
 ![alt text](img/image4/04.011.png)
 ![alt text](img/image4/04.012.png)
 ![alt text](img/image4/04.013.png)

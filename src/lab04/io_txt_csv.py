@@ -47,7 +47,7 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
 
 str_empty=read_text("data/input_empty.txt")
 strUTF=read_text("data/input.txt")
-strcp1251=(read_text("data/input2.txt",encoding='windows-1251'))
+strcp1251=(read_text("data/input.txt",encoding='windows-1251'))
 print(str_empty)
 print(strUTF)
 print(strcp1251)
