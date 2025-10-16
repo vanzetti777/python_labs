@@ -48,9 +48,9 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
 str_empty=read_text("data/input_empty.txt")
 strUTF=read_text("data/input.txt")
 strcp1251=(read_text("data/input.txt",encoding='windows-1251'))
-print(str_empty)
-print(strUTF)
-print(strcp1251)
+# print(str_empty)
+# print(strUTF)
+# print(strcp1251)
 
 # strcp1251_unicodeerror =(read_text("data/input2.txt",encoding='utf-32'))
 # print(strcp1251_unicodeerror)#UnicodeDecodeError
@@ -58,9 +58,9 @@ print(strcp1251)
 
 #создание пустого ссв, заголовка, тест ссв с заголовком
 #пустой пустой файл создается при rows=[] и header=None
-write_csv([], "data/empty.csv", header=("пусто"))
-write_csv([("word","count"),("test",3)], "data/check.csv")
-write_csv([("word","count"),("test",3,"errorrr")], "data/checkvalueerror.csv")#valueerror
+# write_csv([], "data/empty.csv", header=("пусто"))
+# write_csv([("word","count"),("test",3)], "data/check.csv")
+# write_csv([("word","count"),("test",3,"errorrr")], "data/checkvalueerror.csv")#valueerror
 
 # #вывод в терминал
 def print_csv(path):
@@ -69,4 +69,4 @@ def print_csv(path):
     with p.open('r', encoding='utf-8') as f:
         for line in f:
             print(line.strip()) 
-print_csv("data/check.csv")
+# print_csv("data/check.csv")
