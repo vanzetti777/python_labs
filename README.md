@@ -468,10 +468,11 @@ tokens = (tokenize(normalize(inputt)))
 dictt=Counter(tokens)
 sorted_freq = sorted_word_counts(dictt)
 
-top_5 = [word for word, count in sorted_freq[:5]]
-
 print(f"Всего слов: {len(tokens)}")
 print(f"Уникальных слов: {len(dictt)}")
-print(f"Топ-5: {len(top_5)}")
+print(f"Топ-5:")
+for word, count in sorted_freq[:5]:
+    print(f"{word}:{count}")
 ```
 ![alt text](img/image4/04.022.png)
+краевые случаи по типу не существует и пустой файл будут работать

@@ -11,17 +11,18 @@ def sorted_word_counts(freq: dict[str, int]) -> list[tuple[str, int]]:
     return sorted(freq.items(), key=lambda kv: (-kv[1], kv[0]))
 
 
-#превратили в строки из нормализованых слов и частот 
-    text=sorted_word_counts(frequencies_from_text(read_text("data/input.txt")))
-    write_csv(text, "data/report.csv", header=("word", "count"))
+#превратили в строки из нормализованых слов и частот
+ 
+text=sorted_word_counts(frequencies_from_text(read_text("data/input.txt")))
+write_csv(text, "data/report.csv", header=("word", "count"))
 
 inputt = read_text("data/input.txt")
 tokens = (tokenize(normalize(inputt)))
 dictt=Counter(tokens)
 sorted_freq = sorted_word_counts(dictt)
 
-top_5 = [word for word, count in sorted_freq[:5]]
-
 print(f"Всего слов: {len(tokens)}")
 print(f"Уникальных слов: {len(dictt)}")
-print(f"Топ-5: {len(top_5)}")
+print(f"Топ-5:")
+for word, count in sorted_freq[:5]:
+    print(f"{word}:{count}")
