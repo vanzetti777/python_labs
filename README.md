@@ -466,7 +466,9 @@ text=sorted_word_counts(frequencies_from_text(read_text("data/input.txt")))
 write_csv(text, "data/report.csv", header=("word", "count"))
 ```
 наш новый ссв
+
 ![alt text](img/image4/04.021.png)
+
 резюме
 ```python
 inputt = read_text("data/input.txt")
