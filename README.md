@@ -392,21 +392,8 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
         for r in rows:
             w.writerow(r)
 ```
-Чтение файла в кодировке cp1251
-короче везде прописываем какая кодировка
-```python
-def read_text(filename, encoding='cp1251'):
-    with open(filename, 'r', encoding=encoding) as file:
-        return file.read()
+например чтение файла в кодировке cp1251
 
-def write_csv(data, filename, header=None):
-    with open(filename, 'w', encoding='utf-8', newline='') as file:
-        writer = csv.writer(file)
-        if header:
-            writer.writerow(header)
-        writer.writerows(data)
-```
-# Чтение файла в кодировке cp1251
 text = read_text("data/inputcp1251.txt", encoding='cp1251')
 ### проверки
 ```python
