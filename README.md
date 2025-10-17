@@ -393,8 +393,9 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
             w.writerow(r)
 ```
 например чтение файла в кодировке cp1251
-
+```python
 text = read_text("data/inputcp1251.txt", encoding='cp1251')
+```
 ### проверки
 ```python
 #создаю файл и папку
@@ -422,7 +423,7 @@ print(strcp1251_unicodeerror)#UnicodeDecodeError
 print(read_text("data/input_notfound.txt"))#FileNotFoundError
 ```
 1 строчка пустой файл
-
+![alt text](img/image4/04.011.png)
 ![alt text](img/image4/04.012.png)
 ![alt text](img/image4/04.013.png)
 
