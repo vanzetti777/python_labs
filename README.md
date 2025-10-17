@@ -422,6 +422,7 @@ print(read_text("data/input_notfound.txt"))#FileNotFoundError
 ![alt text](img/image4/04.011.png)
 ![alt text](img/image4/04.012.png)
 ![alt text](img/image4/04.013.png)
+
 теперь ссв
 ```python
 #создание пустого ссв, заголовка, тест ссв с заголовком
