@@ -2,10 +2,10 @@ from pathlib import Path
 import csv
 from typing import Iterable, Sequence, Union 
 
-def read_text(path: str | Path, encoding: str = "utf-8") -> str:
-    #читает содержимое и возвращает его как 1 строку
-    p = Path(path)
-    return p.read_text(encoding=encoding)#тут мы по умолчанию испльзуем utf-8
+# def read_text(path: str | Path, encoding: str = "utf-8") -> str:
+#     #читает содержимое и возвращает его как 1 строку
+#     p = Path(path)
+#     return p.read_text(encoding=encoding)#тут мы по умолчанию испльзуем utf-8
 # Чтение файла в кодировке Windows-1251
 #content = read_text("file.txt", encoding="cp1251")
 # Чтение файла в кодировке KOI8-R
@@ -44,13 +44,18 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
 #Path("data").mkdir(exist_ok=True)  # создаем папку data если её нет
 #Path("data/input.txt").write_text(test_content, encoding="utf-8")
 #path=Path("C:\Users\Admin\Desktop\python_labs\data\input.txt")
+def read_text(path: str | Path, encoding: str = "cp1251") -> str:
+    #читает содержимое и возвращает его как 1 строку
+    p = Path(path)
+    return p.read_text(encoding=encoding)
+
 
 str_empty=read_text("data/input_empty.txt")
 strUTF=read_text("data/input.txt")
-strcp1251=(read_text("data/input.txt",encoding='windows-1251'))
+strcp1251=(read_text("data/inputcp1251.txt",encoding='windows-1251'))
 # print(str_empty)
 # print(strUTF)
-# print(strcp1251)
+print(strcp1251)
 
 # strcp1251_unicodeerror =(read_text("data/input2.txt",encoding='utf-32'))
 # print(strcp1251_unicodeerror)#UnicodeDecodeError

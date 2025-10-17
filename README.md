@@ -398,20 +398,24 @@ text = read_text("data/inputcp1251.txt", encoding='cp1251')
 ### проверки
 ```python
 #создаю файл и папку
-test_content = """aaaaa
-bb    c
-"""
+test_content = "Привет, мир! Привет!!!"
 Path("data").mkdir(exist_ok=True)  # создаем папку data если её нет
 Path("data/input.txt").write_text(test_content, encoding="utf-8")
 ```
 проверки на пустые файлы, ошкибки, другие форматы
 ```python
+def read_text(path: str | Path, encoding: str = "cp1251") -> str:
+    p = Path(path)
+    return p.read_text(encoding=encoding)
+strcp1251=(read_text("data/inputcp1251.txt",encoding='windows-1251'))
+print(strcp1251)
+```
+![alt text](img/image4/04.0111.png)
+```python
 str_empty=read_text("data/input_empty.txt")
 strUTF=read_text("data/input.txt")
-strcp1251=(read_text("data/input.txt",encoding='windows-1251'))
 print(str_empty)
 print(strUTF)
-print(strcp1251)
 
 strcp1251_unicodeerror =(read_text("data/input2.txt",encoding='utf-32'))
 print(strcp1251_unicodeerror)#UnicodeDecodeError
@@ -419,7 +423,6 @@ print(read_text("data/input_notfound.txt"))#FileNotFoundError
 ```
 1 строчка пустой файл
 
-![alt text](img/image4/04.011.png)
 ![alt text](img/image4/04.012.png)
 ![alt text](img/image4/04.013.png)
 
