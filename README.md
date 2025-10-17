@@ -364,10 +364,7 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     p = Path(path)
     return p.read_text(encoding=encoding)#тут мы по умолчанию испльзуем utf-8
 ```
-Чтение файла в кодировке Windows-1251
-content = read_text("file.txt", encoding="cp1251")
-Чтение файла в кодировке KOI8-R
-content = read_text("file.txt", encoding="koi8-r")
+для другой кодировки меняем кодировку у файла и меняем в ридтекст и райтссв. код у меня есть если что
 
 ```python
 def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...] | None = None) -> None:
@@ -395,6 +392,22 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
         for r in rows:
             w.writerow(r)
 ```
+Чтение файла в кодировке cp1251
+короче везде прописываем какая кодировка
+```python
+def read_text(filename, encoding='cp1251'):
+    with open(filename, 'r', encoding=encoding) as file:
+        return file.read()
+
+def write_csv(data, filename, header=None):
+    with open(filename, 'w', encoding='utf-8', newline='') as file:
+        writer = csv.writer(file)
+        if header:
+            writer.writerow(header)
+        writer.writerows(data)
+```
+# Чтение файла в кодировке cp1251
+text = read_text("data/inputcp1251.txt", encoding='cp1251')
 ### проверки
 ```python
 #создаю файл и папку

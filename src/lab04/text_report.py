@@ -11,7 +11,9 @@ def sorted_word_counts(freq: dict[str, int]) -> list[tuple[str, int]]:
     return sorted(freq.items(), key=lambda kv: (-kv[1], kv[0]))
 
 #превратили в строки из нормализованых слов и частот
- 
+# text=sorted_word_counts(frequencies_from_text(read_text("data/inputnotexcist.txt")))
+# write_csv(text, "data/report.csv", header=("word", "count"))
+
 text=sorted_word_counts(frequencies_from_text(read_text("data/input.txt")))
 write_csv(text, "data/report.csv", header=("word", "count"))
 
@@ -25,5 +27,7 @@ print(f"Уникальных слов: {len(dictt)}")
 print(f"Топ-5:")
 for word, count in sorted_freq[:5]:
     print(f"{word}:{count}")
+
+
 
 
