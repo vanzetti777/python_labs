@@ -418,6 +418,7 @@ print(strcp1251_unicodeerror)#UnicodeDecodeError
 print(read_text("data/input_notfound.txt"))#FileNotFoundError
 ```
 1 строчка пустой файл
+
 ![alt text](img/image4/04.011.png)
 ![alt text](img/image4/04.012.png)
 ![alt text](img/image4/04.013.png)
