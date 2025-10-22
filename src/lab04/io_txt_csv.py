@@ -43,9 +43,9 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
         for r in rows:
             w.writerow(r)
 
-# a=read_text("data/json.json")
-# write_csv(a,'data/json2.json')
-# write_csv(a,'data/json2.csv')
+a=read_text("data/json.json")
+write_csv(a,'data/json2.json')
+write_csv(a,'data/json2.csv')
 
 # test_content = """aaaaa
 # bb    c
@@ -68,7 +68,7 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
 
 #strcp1251_unicodeerror =(read_text("data/inputcp1251.txt",encoding='utf-32'))
 #print(strcp1251_unicodeerror)#UnicodeDecodeError
-print(read_text("data/input_notfound.txt"))#FileNotFoundError
+#print(read_text("data/input_notfound.txt"))#FileNotFoundError
 
 # write_csv([], "data/empty.csv", header=("пусто"))
 # print("")

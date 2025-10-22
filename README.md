@@ -402,8 +402,22 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
         for r in rows:
             w.writerow(r)
 ```
+при больших файлах читаем построчно, не переделывая все строки в список
 
-### проверки на пустые файлы, ошкибки, другие форматы
+```python
+def write_csv(rows: Iterable[Sequence], path: str | Path,
+              header: tuple[str, ...] | None = None) -> None:
+    p = Path(path)
+    with p.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        if header is not None:
+            w.writerow(header)
+        # Убираем преобразование в list и обрабатываем построчно
+        for r in rows:
+            w.writerow(r)
+```
+
+### проверки на пустые файлы, ошкибки, другие форматы, А ТАКЖЕ НА ТО ЧТО WRITECSV ВОСПРИНИМЕТ ТОЛЬКО TXT И ВЫВОДИТ CSV
 создаю файл и папку
 
 ```python
@@ -441,6 +455,13 @@ print(read_text("data/input_notfound.txt"))#FileNotFoundError
 ![alt text](img/image4/04.011.png)
 ![alt text](img/image4/04.012.png)
 ![alt text](img/image4/04.013.png)
+
+```python
+a=read_text("data/json.json")
+write_csv(a,'data/json2.json')
+write_csv(a,'data/json2.csv')
+```
+![alt text](img/image4/04.0222.png)
 
 создание пустого ссв + заголовка, тест ссв с заголовком, ошибки длины
 
@@ -499,4 +520,5 @@ for word, count in sorted_freq[:5]:
     print(f"{word}:{count}")
 ```
 ![alt text](img/image4/04.022.png)
+
 краевые случаи по типу не существует и пустой файл будут работать
