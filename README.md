@@ -361,6 +361,8 @@ from typing import Iterable, Sequence, Union
 def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     #читает содержимое и возвращает его как 1 строку
     p = Path(path)
+    if p.suffix.lower() != '.txt':
+        raise ValueError('неправильный формат не txt')
     try:
         return p.read_text(encoding=encoding)
     
