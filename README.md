@@ -427,20 +427,23 @@ print(strcp1251)
 
 ```python
 str_empty=read_text("data/input_empty.txt")
-strUTF=read_text("data/input.txt")
 print(str_empty)
+
+strUTF=read_text("data/input.txt")
 print(strUTF)
 
 strcp1251_unicodeerror =(read_text("data/inputcp1251.txt",encoding='utf-32'))
 print(strcp1251_unicodeerror)#UnicodeDecodeError
+
 print(read_text("data/input_notfound.txt"))#FileNotFoundError
 ```
-1 строчка пустой файл
+
 ![alt text](img/image4/04.011.png)
 ![alt text](img/image4/04.012.png)
 ![alt text](img/image4/04.013.png)
 
 создание пустого ссв + заголовка, тест ссв с заголовком, ошибки длины
+
 ```python
 write_csv([], "data/empty.csv", header=("пусто"))
 write_csv([("word","count"),("test",3)], "data/check.csv")
@@ -457,6 +460,7 @@ def print_csv(path):
 print_csv("data/check.csv")
 ```
 ![alt text](img/image4/04.014.png)
+
 ## Задание 2
 ```python
 from text import normalize,tokenize
@@ -472,6 +476,7 @@ def sorted_word_counts(freq: dict[str, int]) -> list[tuple[str, int]]:
     return sorted(freq.items(), key=lambda kv: (-kv[1], kv[0]))
 ```
 превратили в строки из нормализованых слов и частот 
+
 ```python
 text=sorted_word_counts(frequencies_from_text(read_text("data/input.txt")))
 write_csv(text, "data/report.csv", header=("word", "count"))
