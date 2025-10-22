@@ -66,12 +66,12 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
 # # print(strUTF)
 # print(strcp1251)
 
-# strcp1251_unicodeerror =(read_text("data/inputcp1251.txt",encoding='utf-32'))
-# print(strcp1251_unicodeerror)#UnicodeDecodeError
-# print(read_text("data/input_notfound.txt"))#FileNotFoundError
+#strcp1251_unicodeerror =(read_text("data/inputcp1251.txt",encoding='utf-32'))
+#print(strcp1251_unicodeerror)#UnicodeDecodeError
+print(read_text("data/input_notfound.txt"))#FileNotFoundError
 
-write_csv([], "data/empty.csv", header=("пусто"))
-print("")
+# write_csv([], "data/empty.csv", header=("пусто"))
+# print("")
 # write_csv([("word","count"),("test",3)], "data/check.csv")
 # write_csv([("word","count"),("test",3,"errorrr")], "data/checkvalueerror.csv")#valueerror
 

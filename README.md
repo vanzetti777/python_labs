@@ -403,14 +403,14 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
             w.writerow(r)
 ```
 
-### проверки
+### проверки на пустые файлы, ошкибки, другие форматы
+создаю файл и папку
+
 ```python
-#создаю файл и папку
 test_content = "Привет, мир! Привет!!!"
 Path("data").mkdir(exist_ok=True)  # создаем папку data если её нет
 Path("data/input.txt").write_text(test_content, encoding="utf-8")
 ```
-проверки на пустые файлы, ошкибки, другие форматы
 
 чтение другой кодировки
 
