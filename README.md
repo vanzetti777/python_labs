@@ -411,7 +411,7 @@ def write_csv(rows: Iterable[Sequence], path: str | Path,
         w = csv.writer(f)
         if header is not None:
             w.writerow(header)
-        # Убираем преобразование в list и обрабатываем построчно
+
         for r in rows:
             w.writerow(r)
 ```
