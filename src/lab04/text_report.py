@@ -29,5 +29,17 @@ for word, count in sorted_freq[:5]:
     print(f"{word}:{count}")
 
 
+text=sorted_word_counts(frequencies_from_text(read_text("data/very_large.txt")))
+write_csv(text, "data/reportlarge.csv", header=("word", "count"))
 
+inputt = read_text("data/very_large.txt")
+tokens = (tokenize(normalize(inputt)))
+dictt=Counter(tokens)
+sorted_freq = sorted_word_counts(dictt)
+
+print(f"Всего слов: {len(tokens)}")
+print(f"Уникальных слов: {len(dictt)}")
+print(f"Топ-5:")
+for word, count in sorted_freq[:5]:
+    print(f"{word}:{count}")
 

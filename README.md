@@ -362,13 +362,23 @@ from typing import Iterable, Sequence, Union
 def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     #читает содержимое и возвращает его как 1 строку
     p = Path(path)
-    return p.read_text(encoding=encoding)#тут мы по умолчанию испльзуем utf-8
+    try:
+        return p.read_text(encoding=encoding)
+    
+    except FileNotFoundError:
+        raise FileNotFoundError
+    
+    except UnicodeDecodeError:
+        raise UnicodeDecodeError
 ```
-для другой кодировки меняем кодировку у файла и меняем в ридтекст и райтссв. код у меня есть если что
 
 ```python
 def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...] | None = None) -> None:
     p = Path(path)
+
+    if p.suffix.lower() != '.txt':
+        raise ValueError('неправильный формат не txt')
+    
     rows = list(rows)
     #если нет заголовка бедем длину по 1 строчке
     if rows:
@@ -379,11 +389,11 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
         #проверяем все строки, enumerate просто идет по строкам
         for i, row in enumerate(rows):
             if len(row) != expectlen:
-                print("ValueError")
+                raise ValueError
     # если есть заголовок
     if header is not None and rows:
         if len(header) != len(rows[0]):
-            print(ValueError)
+            raise ValueError
     #шаблон
     with p.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
@@ -392,10 +402,7 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
         for r in rows:
             w.writerow(r)
 ```
-например чтение файла в кодировке cp1251
-```python
-text = read_text("data/inputcp1251.txt", encoding='cp1251')
-```
+
 ### проверки
 ```python
 #создаю файл и папку
@@ -404,6 +411,9 @@ Path("data").mkdir(exist_ok=True)  # создаем папку data если е�
 Path("data/input.txt").write_text(test_content, encoding="utf-8")
 ```
 проверки на пустые файлы, ошкибки, другие форматы
+
+чтение другой кодировки
+
 ```python
 def read_text(path: str | Path, encoding: str = "cp1251") -> str:
     p = Path(path)
@@ -412,13 +422,16 @@ strcp1251=(read_text("data/inputcp1251.txt",encoding='windows-1251'))
 print(strcp1251)
 ```
 ![alt text](img/image4/04.0111.png)
+
+пустой txt, самый простой, ошибки
+
 ```python
 str_empty=read_text("data/input_empty.txt")
 strUTF=read_text("data/input.txt")
 print(str_empty)
 print(strUTF)
 
-strcp1251_unicodeerror =(read_text("data/input2.txt",encoding='utf-32'))
+strcp1251_unicodeerror =(read_text("data/inputcp1251.txt",encoding='utf-32'))
 print(strcp1251_unicodeerror)#UnicodeDecodeError
 print(read_text("data/input_notfound.txt"))#FileNotFoundError
 ```
@@ -427,10 +440,8 @@ print(read_text("data/input_notfound.txt"))#FileNotFoundError
 ![alt text](img/image4/04.012.png)
 ![alt text](img/image4/04.013.png)
 
-теперь ссв
+создание пустого ссв + заголовка, тест ссв с заголовком, ошибки длины
 ```python
-#создание пустого ссв, заголовка, тест ссв с заголовком
-#пустой пустой файл создается при rows=[] и header=None
 write_csv([], "data/empty.csv", header=("пусто"))
 write_csv([("word","count"),("test",3)], "data/check.csv")
 write_csv([("word","count"),("test",3,"errorrr")], "data/checkvalueerror.csv")#valueerror
