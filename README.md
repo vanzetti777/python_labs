@@ -353,7 +353,6 @@ for i in top:
 # Лабораторная работа 4
 ## Задание 1
 ### функции
-НО СТОИТ ЧИТАТЬ ПОСТРОЧНО! ЕСЛИ БОЛЬШОЙ ФАЙЛ
 ```python
 from pathlib import Path
 import csv
