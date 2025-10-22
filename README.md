@@ -362,7 +362,7 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     #читает содержимое и возвращает его как 1 строку
     p = Path(path)
     if p.suffix.lower() != '.txt':
-        raise ValueError('неправильный формат не txt')
+        raise ValueError('неправильный исходный формат не txt')
     try:
         return p.read_text(encoding=encoding)
     
@@ -378,7 +378,7 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
     p = Path(path)
 
     if p.suffix.lower() != '.csv':
-        raise ValueError('неправильный формат не csv')
+        raise ValueError('неправильный формат вывода не csv')
     
     rows = list(rows)
     #если нет заголовка бедем длину по 1 строчке
