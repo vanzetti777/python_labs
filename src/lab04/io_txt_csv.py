@@ -1,10 +1,11 @@
 from pathlib import Path
 import csv
-from typing import Iterable, Sequence, Union 
 
 def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     #читает содержимое и возвращает его как 1 строку
     p = Path(path)
+    if p.suffix.lower() != '.txt':
+        raise ValueError('неправильный формат не txt')
     try:
         return p.read_text(encoding=encoding)
     
@@ -16,9 +17,8 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
 
 def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...] | None = None) -> None:
     p = Path(path)
-
-    if p.suffix.lower() != '.txt':
-        raise ValueError('неправильный формат не txt')
+    if p.suffix.lower() != '.csv':
+        raise ValueError('неправильный формат не csv')
     
     rows = list(rows)
     #если нет заголовка бедем длину по 1 строчке
@@ -44,8 +44,11 @@ def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...
             w.writerow(r)
 
 a=read_text("data/json.json")
-write_csv(a,'data/json2.json')
 write_csv(a,'data/json2.csv')
+
+a=read_text("data/input.txt")
+write_csv(a,'data/json2.json')
+
 
 # test_content = """aaaaa
 # bb    c
@@ -59,21 +62,25 @@ write_csv(a,'data/json2.csv')
 #     return p.read_text(encoding=encoding)
 
 
-# str_empty=read_text("data/input_empty.txt")
-# strUTF=read_text("data/input.txt")
-# strcp1251=(read_text("data/inputcp1251.txt",encoding='windows-1251'))
-# # print(str_empty)
-# # print(strUTF)
-# print(strcp1251)
+str_empty=read_text("data/input_empty.txt")
+strUTF=read_text("data/input.txt")
+strcp1251=(read_text("data/inputcp1251.txt",encoding='windows-1251'))
+# print(str_empty)
+# print(strUTF)
 
-#strcp1251_unicodeerror =(read_text("data/inputcp1251.txt",encoding='utf-32'))
-#print(strcp1251_unicodeerror)#UnicodeDecodeError
-#print(read_text("data/input_notfound.txt"))#FileNotFoundError
 
-# write_csv([], "data/empty.csv", header=("пусто"))
-# print("")
-# write_csv([("word","count"),("test",3)], "data/check.csv")
-# write_csv([("word","count"),("test",3,"errorrr")], "data/checkvalueerror.csv")#valueerror
+# strcp1251_unicodeerror =(read_text("data/inputcp1251.txt",encoding='utf-32'))
+# print(strcp1251_unicodeerror)#UnicodeDecodeError
+# print(read_text("data/input_notfound.txt"))#FileNotFoundError
+
+write_csv([], "data/empty22.csv", header=("пусто"))
+print("")
+write_csv([("word","count"),("test",3)], "data/check.csv")
+write_csv([("word","count"),("test",3,"errorrr")], "data/checkvalueerror.csv")#valueerror
+text = (read_text("data/input.txt"))
+write_csv(text, "data/report222.csv", header=None)
+
+
 
 # #вывод в терминал
 def print_csv(path):

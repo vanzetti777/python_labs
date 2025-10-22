@@ -375,8 +375,8 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
 def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...] | None = None) -> None:
     p = Path(path)
 
-    if p.suffix.lower() != '.txt':
-        raise ValueError('неправильный формат не txt')
+    if p.suffix.lower() != '.csv':
+        raise ValueError('неправильный формат не csv')
     
     rows = list(rows)
     #если нет заголовка бедем длину по 1 строчке
@@ -457,9 +457,13 @@ print(read_text("data/input_notfound.txt"))#FileNotFoundError
 
 ```python
 a=read_text("data/json.json")
-write_csv(a,'data/json2.json')
 write_csv(a,'data/json2.csv')
+
+a=read_text("data/input.txt")
+write_csv(a,'data/json2.json')
 ```
+
+![alt text](img/image4/04.0223.png)
 ![alt text](img/image4/04.0222.png)
 
 создание пустого ссв + заголовка, тест ссв с заголовком, ошибки длины
