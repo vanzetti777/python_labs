@@ -1,43 +1,53 @@
 from pathlib import Path
 import csv
-def read_text(path: str | Path, encoding: str = "utf-8") -> str:
-    #читает содержимое и возвращает его как 1 строку
-    p = Path(path)
+import json  
+
+def json_to_csv(json_path: str, csv_path: str, header: tuple[str, ...] | None = None) -> None:
+    #проверка на формат входных и выходных данных
+    p_json = Path(json_path)
+    if p_json.suffix.lower() != '.json':
+        raise ValueError('неправильный входной формат не json')
+    p_csv = Path(csv_path)
+    if p_csv.suffix.lower() != '.csv':
+        raise ValueError('неправильный выходной формат не csv')
+    #чтение json и проверка на существование, utf-8
     try:
-        return p.read_text(encoding=encoding)
-    
+        with p_json.open('r', encoding='utf-8') as f:
+            list_dicts=json.load(f)
     except FileNotFoundError:
         raise FileNotFoundError
-    
     except UnicodeDecodeError:
         raise UnicodeDecodeError
-
-def json_to_csv(json_path: str, csv_path: str) -> None:
-    """
-    Преобразует JSON-файл в CSV.
-    Поддерживает список словарей [{...}, {...}], заполняет отсутствующие поля пустыми строками.
-    Кодировка UTF-8. Порядок колонок — как в первом объекте или алфавитный (указать в README).
-    """
-def csv_to_json(csv_path: str, json_path: str) -> None:
-    p = Path(path)
-    if p.suffix.lower() != '.csv':
-        raise ValueError('неправильный формат не csv')
-    rows = list(rows)
-    if rows:
-        if header is not None:
-            expectlen = len(header)
-        else:
-            expectlen = len(rows[0])
-        #проверяем все строки, enumerate просто идет по строкам
-        for i, row in enumerate(rows):
-            if len(row) != expectlen:
-                raise ValueError
-    if header is not None and rows:
-        if len(header) != len(rows[0]):
+    except json.JSONDecodeError:
+        raise ValueError
+    #словари ли это
+    for item in list_dicts:
+        if not isinstance(item, dict):
             raise ValueError
-    with p.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        if header is not None:
-            w.writerow(header)
-        for r in rows:
-            w.writerow(r)
+    #проверка на пустоту
+    if len(list_dicts)==0:
+        raise ValueError
+    #записть csv
+    with p_csv.open('w',encoding='utf-8', newline='') as f:
+        if header is None:
+            #порядок из 1 объекта
+            fieldnames=list(list_dicts[0].keys())
+        else:
+            fieldnames=list(header)
+        #пустоты заполняем
+        res=csv.DictWriter(f,fieldnames=fieldnames,restval='пусто')
+        res.writeheader()
+        for row in list_dicts:
+            res.writerow(row)
+#def csv_to_json(csv_path: str, json_path: str,  header: tuple[str, ...] | None = None) -> None:
+
+data = [{"name": "Alice", "age": 22}, {"name": "Bob", "age": 25}, {"name": "John"}]
+path = Path("data/people.json")
+with path.open('w', encoding='utf-8') as i:
+    json.dump(data, i ,ensure_ascii=False, indent=2)
+
+#json_to_csv("data/people.json", "data/people.csv")
+#json_to_csv("data/peopleempty.json", "data/people2.csv")
+#json_to_csv("data/peoplenotdict.json", "data/people2.csv")
+#json_to_csv("data/peoplenotexcist.json", "data/people2.csv")
+json_to_csv("data/people1251.json", "data/people2.csv")
