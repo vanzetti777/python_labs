@@ -584,7 +584,7 @@ data = [{"name": "Alice", "age": 22}, {"name": "Bob", "age": 25}, {"name": "John
 path = Path("data/people.json")
 with path.open('w', encoding='utf-8') as i:
     json.dump(data, i ,ensure_ascii=False, indent=2)
-#база, пустой, не словарь
+#база, пустой, не словарь, не сущ, не utf-8
 json_to_csv("data/people.json", "data/people.csv")
 json_to_csv("data/peopleempty.json", "data/people2.csv")
 json_to_csv("data/peoplenotdict.json", "data/people2.csv")
@@ -597,3 +597,57 @@ json_to_csv("data/people1251.json", "data/people2.csv")
 ![alt text](img/image5/1.3.png)
 ![alt text](img/image5/1.4.png)
 ![alt text](img/image5/1.5.png)
+
+```python
+def csv_to_json(csv_path: str, json_path: str,  header: tuple[str, ...] | None = None) -> None:
+    #проверка на формат входных и выходных данных
+    p_csv = Path(csv_path)
+    if p_csv.suffix.lower() != '.csv':
+        raise ValueError('неправильный входной формат не csv')
+    p_json = Path(json_path)
+    if p_json.suffix.lower() != '.json':
+        raise ValueError('неправильный выходной формат не json')
+    list_dicts=[]
+    try:
+        with p_csv.open('r', encoding='utf-8') as f:
+            #ЕСЛИ НЕ УКАЗАН
+            if header is None:
+                read=csv.DictReader(f)
+                #ЕСЛИ ЕГО ВООБЩЕ НЕТ
+                if read.fieldnames is None:
+                    raise ValueError("нет заголовка или пустой")
+                list_dicts=list(read)
+            else:
+                read=csv.DictReader(f,fieldnames=header)
+                #следующая строка тк 1я заголовки
+                next(read)
+                list_dicts=list(read)
+    except FileNotFoundError:
+        raise FileNotFoundError
+    except UnicodeDecodeError:
+        raise UnicodeDecodeError
+    with p_json.open('w',encoding='utf-8') as f:
+        json.dump(list_dicts, f, ensure_ascii=False, indent=2)
+
+rows = [
+    {"name": "Alice", "age": "22", "city": "SPB"},
+    {"name": "Bob", "age": "25", "city": "Moscow"}
+]
+with open("data/peoplein.csv", "w", newline="", encoding="utf-8") as f:
+    fieldnames = rows[0].keys()
+    ress = csv.DictWriter(f, fieldnames=fieldnames)
+    ress.writeheader()
+    ress.writerows(rows)
+csv_to_json("data/peoplein.csv","data/peopleout.json")
+csv_to_json("data/peopleempty.csv", "data/people2.json")
+csv_to_json("data/no_header.csv", "data/people2.json")
+csv_to_json("data/peoplenotexcist.csv", "data/people2.json")
+csv_to_json("data/people1251.csv", "data/people2.")
+```
+
+![alt text](img/image5/2.11.png)
+![alt text](img/image5/2.12.png)
+![alt text](img/image5/2.2.png)
+![alt text](img/image5/2.3.png)
+![alt text](img/image5/2.4.png)
+![alt text](img/image5/2.5.png)
