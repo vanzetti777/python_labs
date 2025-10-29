@@ -604,7 +604,6 @@ json_to_csv("data/people1251.json", "data/people2.csv")
 ![alt text](img/image5/1.3.png)
 ![alt text](img/image5/1.4.png)
 ![alt text](img/image5/1.5.png)
-
 ```python
 def csv_to_json(csv_path: str, json_path: str) -> None:
     #проверка на формат входных и выходных данных

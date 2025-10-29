@@ -51,10 +51,10 @@ with path.open('w', encoding='utf-8') as i:
     json.dump(data, i ,ensure_ascii=False, indent=2)
 
 json_to_csv("data/people.json", "data/people.csv")
-#json_to_csv("data/peopleempty.json", "data/people2.csv")
+json_to_csv("data/peopleempty.json", "data/people2.csv")
 #json_to_csv("data/peoplenotdict.json", "data/people2.csv")
 #json_to_csv("data/peoplenotexcist.json", "data/people2.csv")
-json_to_csv("data/people1251.json", "data/people2.csv")
+#json_to_csv("data/people1251.json", "data/people2.csv")
 
 # def csv_to_json(csv_path: str, json_path: str) -> None:
 #     #проверка на формат входных и выходных данных
