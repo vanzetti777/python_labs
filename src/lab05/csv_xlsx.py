@@ -2,7 +2,7 @@ import csv
 from pathlib import Path
 import xlsxwriter
 
-def csv_to_xlsx(csv_path: str, xlsx_path: str, header: tuple[str, ...] | None = None) -> None:
+def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     p_csv = Path(csv_path) 
     if p_csv.suffix.lower() != '.csv':
         raise ValueError('неправильный входной формат не csv')
