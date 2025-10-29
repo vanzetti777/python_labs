@@ -600,6 +600,9 @@ json_to_csv("data/people1251.json", "data/people2.csv")
 ```
 ![alt text](img/image5/1.11.png)
 ![alt text](img/image5/1.12.png)
+
+но если в файле будет {} или [] то тож ошибка
+
 ![alt text](img/image5/1.2.png)
 ![alt text](img/image5/1.3.png)
 ![alt text](img/image5/1.4.png)
