@@ -19,10 +19,6 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
         raise UnicodeDecodeError
     if len(data) == 0:
         raise ValueError("пустой")
-    if header is None:
-        for i in data[0]:
-            if not i:
-                raise ValueError("нет заголовка")
     # создание xlsx файла
     workbook = xlsxwriter.Workbook(xlsx_path)
     worksheet = workbook.add_worksheet("Sheet1")
@@ -34,3 +30,7 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     workbook.close()
 
 csv_to_xlsx("data/people.csv", "data/people.xlsx")
+#csv_to_xlsx("data/peopleempty.csv", "data/people2.xlsx")
+#csv_to_xlsx("data/peoplenotexcist.csv", "data/people2.xlsx")
+csv_to_xlsx("data/people1251.csv", "data/people2.xlsx")
+

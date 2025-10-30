@@ -661,7 +661,7 @@ import csv
 from pathlib import Path
 import xlsxwriter
 
-def csv_to_xlsx(csv_path: str, xlsx_path: str, header: tuple[str, ...] | None = None) -> None:
+def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     p_csv = Path(csv_path) 
     if p_csv.suffix.lower() != '.csv':
         raise ValueError('неправильный входной формат не csv')
@@ -678,10 +678,6 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str, header: tuple[str, ...] | None = 
         raise UnicodeDecodeError
     if len(data) == 0:
         raise ValueError("пустой")
-    if header is None:
-        for i in data[0]:
-            if not i:
-                raise ValueError("нет заголовка")
     # создание xlsx файла
     workbook = xlsxwriter.Workbook(xlsx_path)
     worksheet = workbook.add_worksheet("Sheet1")
@@ -693,5 +689,11 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str, header: tuple[str, ...] | None = 
     workbook.close()
 
 csv_to_xlsx("data/people.csv", "data/people.xlsx")
+#csv_to_xlsx("data/peopleempty.csv", "data/people2.xlsx")
+#csv_to_xlsx("data/peoplenotexcist.csv", "data/people2.xlsx")
+csv_to_xlsx("data/people1251.csv", "data/people2.xlsx")
 ```
 ![alt text](img/image5/3.3333.png)
+![alt text](img/image5/3.2.png)
+![alt text](img/image5/3.4.png)
+![alt text](img/image5/3.5.png)
