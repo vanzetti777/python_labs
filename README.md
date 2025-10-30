@@ -689,8 +689,8 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     workbook.close()
 
 csv_to_xlsx("data/people.csv", "data/people.xlsx")
-#csv_to_xlsx("data/peopleempty.csv", "data/people2.xlsx")
-#csv_to_xlsx("data/peoplenotexcist.csv", "data/people2.xlsx")
+csv_to_xlsx("data/peopleempty.csv", "data/people2.xlsx")
+csv_to_xlsx("data/peoplenotexcist.csv", "data/people2.xlsx")
 csv_to_xlsx("data/people1251.csv", "data/people2.xlsx")
 ```
 ![alt text](img/image5/3.3333.png)
