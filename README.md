@@ -680,6 +680,7 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
         raise UnicodeDecodeError
     if len(data) == 0:
         raise ValueError("пустой")
+    original_count = len(data)
     # создание xlsx файла
     workbook = xlsxwriter.Workbook(xlsx_path)
     worksheet = workbook.add_worksheet("Sheet1")
@@ -687,9 +688,13 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     for row_idx, row in enumerate(data):
         for col_idx, value in enumerate(row):
             worksheet.write(row_idx, col_idx, value)
+        written_count += 1
     #закрываем
     workbook.close()
 
+    if original_count != written_count:
+        raise ValueError("Количество записей не совпало")
+        
 csv_to_xlsx("data/people.csv", "data/people.xlsx")
 csv_to_xlsx("data/peopleempty.csv", "data/people2.xlsx")
 csv_to_xlsx("data/peoplenotexcist.csv", "data/people2.xlsx")
