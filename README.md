@@ -562,6 +562,9 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
     #проверка на пустоту
     if len(list_dicts)==0:
         raise ValueError("пустой json типа {}")
+    
+    original_count = len(list_dicts)
+
     #поиск заголовков
     fieldnames = set()
     for item in list_dicts:
@@ -574,6 +577,13 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
         res.writeheader()
         for row in list_dicts:
             res.writerow(row)
+    
+    with p_csv.open('r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            csv_count = len(list(reader))
+            if original_count != csv_count:
+                raise ValueError("количество записей не совпало")
+
 ```
 
 проверки
