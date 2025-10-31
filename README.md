@@ -617,8 +617,6 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
             data = [row for row in reader]
     except FileNotFoundError:
         raise FileNotFoundError
-    except FileNotFoundError:
-        raise FileNotFoundError
     except UnicodeDecodeError:
         raise UnicodeDecodeError
     with p_json.open('w',encoding='utf-8') as f:
