@@ -611,6 +611,7 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
         raise ValueError('неправильный выходной формат не json')
     try:
         with p_csv.open('r', encoding='utf-8') as f:
+            #считает первую строку как заголовки
             reader = csv.DictReader(f)
             if not reader.fieldnames:
                 raise ValueError('нет заголовка или пустой')
