@@ -532,13 +532,6 @@ for word, count in sorted_freq[:5]:
 функция
 
 ```python
-from pathlib import Path
-import csv
-import json  
-
-from pathlib import Path
-import csv
-import json  
 
 from pathlib import Path
 import csv
