@@ -814,11 +814,11 @@ def main():
     p3.add_argument("--out", dest="output", required=True,help="путь для xlsx")
 
     args = parser.parse_args()
-    # Проверка входного файла
+    #проверка входного файла
     if not os.path.exists(args.input):
         parser.error("входной файл не найден.")
 
-    # Выполнение подкоманды
+    #выполнение подкоманд
     try:
         #если команда такая то такая то, то из 5 лабы
         if args.cmd == "json2csv":
@@ -835,12 +835,17 @@ if __name__ == "__main__":
     main()
 ```
 
+json в csv
 
 ![alt text](img/image6/6.5.png)
 
 ![alt text](img/image6/6.6.png)
 
+csv в json (без фото там также)
+
 ![alt text](img/image6/6.7.png)
+
+csv в xlsx 
 
 ![alt text](img/image6/6.8.png)
 
