@@ -714,7 +714,7 @@ csv_to_xlsx("data/people1251.csv", "data/people2.xlsx")
 ![alt text](img/image5/3.5.png)
 
 # Лабораторная работа 6
-## коды
+## код1
 ```python
 import argparse
 from lab03.text import tokenize, count_freq, top_n
@@ -771,10 +771,16 @@ def main():
 
 ![alt text](img/image6/6.1.png)
 
-вывод строки
+![alt text](img/image6/6.11.png)
+
+вывод строки cat
 
 ![alt text](img/image6/6.2.png)
 
-вывод топа
+вывод топа stats
 
 ![alt text](img/image6/6.3.png)
+
+другой тип данных
+
+![alt text](img/image6/6.4.png)
