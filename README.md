@@ -767,4 +767,14 @@ def main():
     else:
         parser.print_help()
 ```
+структура(?)
 
+![alt text](img/image6/6.1.png)
+
+вывод строки
+
+![alt text](img/image6/6.2.png)
+
+вывод топа
+
+![alt text](img/image6/6.3.png)
