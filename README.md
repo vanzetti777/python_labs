@@ -715,22 +715,26 @@ csv_to_xlsx("data/people1251.csv", "data/people2.xlsx")
 
 # Лабораторная работа 6
 ## код1
+
 ```python
 import argparse
 from lab03.text import tokenize, count_freq, top_n
 
-
 def main():
+    # создаем основу
     parser = argparse.ArgumentParser(description="CLI‑утилиты лабораторной №6")
+    #создаю аргументы 
     subparsers = parser.add_subparsers(dest="command")
 
     # подкоманда cat - вывод файла
     cat_parser = subparsers.add_parser("cat", help="Вывести содержимое файла")
+    #аргуенты подкоманды input для получения и вывода без нумерации и n для нумерациии
     cat_parser.add_argument("--input", required=True, help="путь к файлу")
     cat_parser.add_argument("-n", action="store_true", help="Нумеровать строки")
 
     # подкоманда stats - анализ
     stats_parser = subparsers.add_parser("stats", help="Частоты слов")
+    #аргументы input для получения файла и вывода всей статистики и top для топа..
     stats_parser.add_argument("--input", required=True, help="путь к файлу")
     stats_parser.add_argument("--top", type=int, default=5, help="топ слов")
 
@@ -784,3 +788,60 @@ def main():
 другой тип данных
 
 ![alt text](img/image6/6.4.png)
+
+## код2
+```python
+import argparse
+import os
+from json_csv import json_to_csv, csv_to_json
+from csv_xlsx import csv_to_xlsx
+
+def main():
+    parser = argparse.ArgumentParser(description="Конвертеры данных")
+    sub = parser.add_subparsers(dest="cmd")
+
+    p1 = sub.add_parser("json2csv",help="json в csv")
+    # подаргументы in и out для args входных и выходных
+    p1.add_argument("--in", dest="input", required=True, help="путь для json")
+    p1.add_argument("--out", dest="output", required=True, help="путь для csv")
+
+    p2 = sub.add_parser("csv2json",help="путь csv в json")
+    p2.add_argument("--in", dest="input", required=True,help="путь для csv")
+    p2.add_argument("--out", dest="output", required=True,help="путь для json")
+
+    p3 = sub.add_parser("csv2xlsx",help="путь csv в xlsx")
+    p3.add_argument("--in", dest="input", required=True,help="путь для csv")
+    p3.add_argument("--out", dest="output", required=True,help="путь для xlsx")
+
+    args = parser.parse_args()
+    # Проверка входного файла
+    if not os.path.exists(args.input):
+        parser.error("входной файл не найден.")
+
+    # Выполнение подкоманды
+    try:
+        #если команда такая то такая то, то из 5 лабы
+        if args.cmd == "json2csv":
+            json_to_csv(args.input, args.output)
+        elif args.cmd == "csv2json":
+            csv_to_json(args.input, args.output)
+        elif args.cmd == "csv2xlsx":
+            csv_to_xlsx(args.input, args.output)
+        print(f"Успешно: {args.input} -> {args.output}")
+    except Exception as e:
+        parser.error("ошибка при конвертации")
+
+if __name__ == "__main__":
+    main()
+```
+
+
+![alt text](img/image6/6.5.png)
+
+![alt text](img/image6/6.6.png)
+
+![alt text](img/image6/6.7.png)
+
+![alt text](img/image6/6.8.png)
+
+![alt text](img/image6/6.9.png)

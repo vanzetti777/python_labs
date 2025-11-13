@@ -1,4 +1,4 @@
-age,name
-22,Alice
-25,Bob
-пусто,John
+name,age
+Alice,22
+Bob,25
+John,пусто
