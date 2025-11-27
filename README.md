@@ -726,7 +726,7 @@ def main():
     #создаю аргументы 
     subparsers = parser.add_subparsers(dest="command")
 
-    # подкоманда cat - вывод файла
+    # подкоманда cat - вывод файла построчно
     cat_parser = subparsers.add_parser("cat", help="Вывести содержимое файла")
     #аргуенты подкоманды input для получения и вывода без нумерации и n для нумерациии
     cat_parser.add_argument("--input", required=True, help="путь к файлу")
