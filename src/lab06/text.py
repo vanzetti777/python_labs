@@ -2,12 +2,16 @@ testcase1="ПрИвЕт\nМИр\t"
 testcase2="ёжик, Ёлка" 
 testcase3="Hello\r\nWorld" 
 testcase4="  двойные   пробелы  "
-import re
 def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
-    # r'\s+' заменяем все все лишние элементы, заменяет на пробел
-    text= re.sub(r'\s+', ' ', text).strip()
-    text=text.casefold()
-    text=text.replace('ё','e')
+    if not text:
+        return ""
+    text = re.sub(r'[^a-zA-Zа-яА-ЯёЁ\s]', '', text)
+    text = re.sub(r'\s+', ' ', text).strip()
+    if casefold:
+        text = text.lower()
+    if yo2e:
+        text = text.replace('ё', 'е')
+    
     return text
     
 # print(normalize(testcase1))

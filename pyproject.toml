@@ -22,3 +22,4 @@ dev = [
 [tool.black]
 line-length = 88
 target-version = ["py38"]
+
