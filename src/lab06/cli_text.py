@@ -1,5 +1,5 @@
 import argparse
-from text import tokenize, count_freq, top_n
+from src.lab03.text import tokenize, count_freq, top_n
 
 
 def main():
@@ -21,7 +21,7 @@ def main():
     if args.command == "cat":
         try:
             with open(args.input, encoding="utf-8") as f:
-            #нумеруем с 1 в формате номер: строка
+                # нумеруем с 1 в формате номер: строка
                 for i, line in enumerate(f, start=1):
                     if args.n:
                         print(f"{i}: {line.rstrip()}")
@@ -31,7 +31,7 @@ def main():
             parser.error("файл не найден")
         except Exception as e:
             parser.error("ошибка при чтении файла")
-        
+
     #
     elif args.command == "stats":
         try:
@@ -45,8 +45,10 @@ def main():
             parser.error(f"Файл '{args.input}' не найден")
         except Exception as e:
             parser.error(f"Ошибка при анализе файла: {e}")
-    
+
     else:
         parser.print_help()
+
+
 if __name__ == "__main__":
     main()

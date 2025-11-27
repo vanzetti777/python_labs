@@ -17,30 +17,32 @@
 # print(min_max(test5))
 
 
+test1 = [3, 1, 2, 1, 3]
+test2 = []
+test3 = [-1, -1, 0, 2, 2]
+test4 = [1.0, 1, 2.5, 2.5, 0]
 
-test1=[3, 1, 2, 1, 3] 
-test2=[]
-test3=[-1, -1, 0, 2, 2]
-test4=[1.0, 1, 2.5, 2.5, 0]
+
 def unique_sorted(nums: list[float | int]) -> list[float | int]:
-    list_int=[]
-    list_float=[]
+    list_int = []
+    list_float = []
     for i in nums:
-        if type(i)==int:
+        if type(i) == int:
             list_int.append(i)
         else:
             list_float.append(i)
-    res1=[x for x in list_float if int(x) in list_int]
-    res2=[x for x in list_int if float(x) not in list_float]
-    print(sorted(set(res1+res2+list_float)))
+    res1 = [x for x in list_float if int(x) in list_int]
+    res2 = [x for x in list_int if float(x) not in list_float]
+    print(sorted(set(res1 + res2 + list_float)))
     print(res1)
     print(res2)
     print(list_float)
+
+
 print(unique_sorted(test1))
 print(unique_sorted(test2))
 print(unique_sorted(test3))
 print(unique_sorted(test4))
-
 
 
 # test1=[[1, 2], [3, 4]]
@@ -68,7 +70,3 @@ print(unique_sorted(test4))
 # print(flatten(test2))
 # print(flatten(test3))
 # print(flatten(test4))
-
-
-
-
