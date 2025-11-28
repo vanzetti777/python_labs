@@ -946,7 +946,10 @@ def test_top_n_basic(freq_dict, n, expected):
     assert top_n(freq_dict, n) == expected
 ```
 
-# тестики на файлы
+# тестики на преобразование файлов
+
+tmp_path: Path - временная директория, создаваемая pytest
+
 
 ```python
 import pytest
