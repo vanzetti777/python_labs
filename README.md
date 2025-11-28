@@ -1169,27 +1169,27 @@ def test_csv_to_json_field_names(tmp_path: Path):
 
 ```python
 [build-system]
-requires = ["setuptools >= 77.0.3"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools >= 77.0.3"] # зависимости
+build-backend = "setuptools.build_meta" # сборка 
 
 [project]
-name = "python-labs"
-dynamic = ["version"]
+name = "python-labs" # имя 
+dynamic = ["version"] # версия
 
 dependencies = [
-    "pandas>=2.2",
-    "openpyxl>=3.0",
+    "pandas>=2.2", # библиотека анализа данных
+    "openpyxl>=3.0", # библиотека для экселя
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=8.0",
-    "pytest-cov>=5.0",
-    "black>=24.0",
-    "ruff>=0.6"
+    "pytest>=8.0", # для тестирования
+    "pytest-cov>=5.0", # для покрытия 
+    "black>=24.0", # для стиля
+    "ruff>=0.6" # для проверки
 ]
 
 [tool.black]
-line-length = 88
-target-version = ["py38"]
+line-length = 88 # макс длина строки
+target-version = ["py38"] # синтаксис питона версии 3.8
 ```
