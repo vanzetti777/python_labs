@@ -1,10 +1,10 @@
-from text import normalize, tokenize
+from src.lab03.text import normalize, tokenize, count_freq, top_n
 from collections import Counter
-from io_txt_csv import write_csv, read_text
+from src.lab04.io_txt_csv import write_csv, read_text
 
 
 def frequencies_from_text(text: str) -> dict[str, int]:
-    from text import normalize, tokenize
+    from src.lab03.text import normalize, tokenize
 
     tokens = tokenize(normalize(text))
     return Counter(tokens)  # dict-like

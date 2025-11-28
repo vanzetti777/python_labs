@@ -850,3 +850,346 @@ csv в xlsx
 ![alt text](img/image6/6.8.png)
 
 ![alt text](img/image6/6.9.png)
+
+# Лабораторная работа 7
+
+# тестики на текст
+```python
+import pytest
+from src.lab03.text import normalize, tokenize, count_freq, top_n
+
+# NORMALIZE
+
+
+@pytest.mark.parametrize(
+    "source, expected",
+    [
+        # кириллица, спецсимволы
+        ("ПрИвЕт\nМИр\t", "привет мир"),
+        # буква ё
+        ("ёжик, Ёлка", "ежик елка"),
+        # латиница, спецсимволы
+        ("Hello\r\nWorld", "hello world"),
+        # лишние пробелы
+        ("  двойные   пробелы  ", "двойные пробелы"),
+        # пустая строка
+        ("", ""),
+        # только спецсимволы
+        ("!@#$%^&*()", ""),
+        # цифры
+        ("Test123 Numbers456", "test numbers"),
+        # смешанный случай
+        ("Mixed Test!", "mixed test"),
+    ],
+)
+def test_normalize_basic(source, expected):
+    assert normalize(source) == expected
+
+
+# TOKENIZE
+@pytest.mark.parametrize(
+    "source, expected",
+    [
+        # базовый случай
+        ("привет мир тест", ["привет", "мир", "тест"]),
+        # одно слово
+        ("один", ["один"]),
+        # пустая строка
+        ("", []),
+        # только пробелы
+        ("   \t\n  ", []),
+        # лишние пробелы
+        ("  два   слова  ", ["два", "слова"]),
+        # латиница
+        ("hello world test", ["hello", "world", "test"]),
+    ],
+)
+def test_tokenize_basic(source, expected):
+    assert tokenize(source) == expected
+
+
+@pytest.mark.parametrize(
+    "tokens, expected",
+    [
+        # базовый случай
+        (["привет", "мир", "привет"], {"привет": 2, "мир": 1}),
+        # пустой список
+        ([], {}),
+        # одно слово
+        (["слово"], {"слово": 1}),
+        # повторения
+        (["a", "a", "a", "a"], {"a": 4}),
+        # на английском
+        (["hello", "world", "hello"], {"hello": 2, "world": 1}),
+    ],
+)
+def test_count_freq(tokens, expected):
+    assert count_freq(tokens) == expected
+
+
+@pytest.mark.parametrize(
+    "freq_dict, n, expected",
+    [
+        # базовый случай
+        ({"привет": 3, "мир": 2, "тест": 1}, 2, [("привет", 3), ("мир", 2)]),
+        # n больше чем количество слов
+        ({"привет": 3, "мир": 2}, 5, [("привет", 3), ("мир", 2)]),
+        # n = 0
+        ({"привет": 3, "мир": 2}, 0, []),
+        # пустой словарь
+        ({}, 3, []),
+        # одно слово
+        ({"слово": 5}, 1, [("слово", 5)]),
+    ],
+)
+def test_top_n_basic(freq_dict, n, expected):
+    assert top_n(freq_dict, n) == expected
+```
+
+# тестики на файлы
+
+```python
+import pytest
+import json
+import csv
+from pathlib import Path
+from src.lab05.json_csv import json_to_csv, csv_to_json
+
+# БАЗА
+
+
+def test_json_to_csv_roundtrip(tmp_path: Path):
+    src = tmp_path / "people.json"
+    dst = tmp_path / "people.csv"
+    data = [
+        {"name": "Alice", "age": 22},
+        {"name": "Bob", "age": 25},
+    ]
+    src.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    json_to_csv(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    assert len(rows) == 2
+    assert {"name", "age"} <= set(rows[0].keys())
+
+
+def test_csv_to_json_roundtrip(tmp_path: Path):
+    src = tmp_path / "data.csv"
+    dst = tmp_path / "data.json"
+
+    csv_data = [
+        {"name": "Alice", "age": "22", "city": "Moscow"},
+        {"name": "Bob", "age": "25", "city": "London"},
+    ]
+
+    with src.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["name", "age", "city"])
+        writer.writeheader()
+        writer.writerows(csv_data)
+    csv_to_json(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        result_data = json.load(f)
+
+    assert len(result_data) == 2
+    assert result_data[0]["name"] == "Alice"
+    assert result_data[1]["age"] == 25  # Должно преобразоваться в число
+
+
+# ПУСТЫЕ
+def test_json_to_csv_empty_json(tmp_path: Path):
+    src = tmp_path / "empty.json"
+    dst = tmp_path / "empty.csv"
+
+    src.write_text("[]", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="пустой json"):
+        json_to_csv(str(src), str(dst))
+
+
+def test_csv_to_json_empty_csv(tmp_path: Path):
+    src = tmp_path / "empty.csv"
+    dst = tmp_path / "empty.json"
+
+    src.write_text("", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="нет заголовка или пустой"):
+        csv_to_json(str(src), str(dst))
+
+
+# НА ФОРМАТЫ
+
+
+def test_json_to_csv_wrong_input_format(tmp_path: Path):
+    src = tmp_path / "data.txt"
+    dst = tmp_path / "data.csv"
+
+    src.write_text("some text", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="неправильный входной формат не json"):
+        json_to_csv(str(src), str(dst))
+
+
+def test_json_to_csv_wrong_output_format(tmp_path: Path):
+    src = tmp_path / "data.json"
+    dst = tmp_path / "data.txt"
+
+    src.write_text("[]", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="неправильный выходной формат не csv"):
+        json_to_csv(str(src), str(dst))
+
+
+def test_csv_to_json_wrong_input_format(tmp_path: Path):
+
+    src = tmp_path / "data.txt"
+    dst = tmp_path / "data.json"
+
+    src.write_text("some text", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="неправильный входной формат не csv"):
+        csv_to_json(str(src), str(dst))
+
+
+def test_csv_to_json_wrong_output_format(tmp_path: Path):
+    src = tmp_path / "data.csv"
+    dst = tmp_path / "data.txt"
+
+    with src.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["name"])
+        writer.writeheader()
+
+    with pytest.raises(ValueError, match="неправильный выходной формат не json"):
+        csv_to_json(str(src), str(dst))
+
+
+# НЕ СУЩЕСТВУЕТ
+
+
+def test_csv_to_json_file_not_found():
+    with pytest.raises(FileNotFoundError):
+        csv_to_json("nonexistent.csv", "output.json")
+
+
+def test_json_to_csv_file_not_found():
+    with pytest.raises(FileNotFoundError):
+        json_to_csv("nonexistent.json", "output.csv")
+
+
+# КОЛВО ЗАПИСЕЙ СОВПАДАЕТ
+def test_json_to_csv_record_count(tmp_path: Path):
+    src = tmp_path / "people.json"
+    dst = tmp_path / "people.csv"
+    data = [
+        {"name": "Alice", "age": 22},
+        {"name": "Bob", "age": 25},
+        {"name": "Charlie", "age": 30},
+    ]
+    src.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    json_to_csv(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    assert len(rows) == 3
+
+
+def test_csv_to_json_record_count(tmp_path: Path):
+    src = tmp_path / "data.csv"
+    dst = tmp_path / "data.json"
+
+    csv_data = [
+        {"name": "Alice", "age": "22"},
+        {"name": "Bob", "age": "25"},
+        {"name": "Charlie", "age": "30"},
+        {"name": "David", "age": "35"},
+    ]
+
+    with src.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["name", "age"])
+        writer.writeheader()
+        writer.writerows(csv_data)
+    csv_to_json(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        result_data = json.load(f)
+
+    assert len(result_data) == 4
+
+
+# ПРОВЕРКА ЗАГОЛОВКОВ
+def test_json_to_csv_field_names(tmp_path: Path):
+    src = tmp_path / "people.json"
+    dst = tmp_path / "people.csv"
+    data = [
+        {"name": "Alice", "age": 22, "city": "Moscow"},
+        {"name": "Bob", "age": 25, "city": "London"},
+    ]
+    src.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    json_to_csv(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    assert set(rows[0].keys()) == {"name", "age", "city"}
+
+
+def test_csv_to_json_field_names(tmp_path: Path):
+    src = tmp_path / "data.csv"
+    dst = tmp_path / "data.json"
+
+    csv_data = [
+        {"name": "Alice", "age": "22", "city": "Moscow", "country": "Russia"},
+        {"name": "Bob", "age": "25", "city": "London", "country": "UK"},
+    ]
+
+    with src.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["name", "age", "city", "country"])
+        writer.writeheader()
+        writer.writerows(csv_data)
+    csv_to_json(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        result_data = json.load(f)
+
+    assert set(result_data[0].keys()) == {"name", "age", "city", "country"}
+```
+
+все тесты прошли
+
+![alt text](<img/image 7/1.png>)
+
+# стиль тоже супер
+
+![alt text](<img/image 7/2.png>)
+
+# pyproject 
+
+```python
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-labs"
+dynamic = ["version"]
+
+dependencies = [
+    "pandas>=2.2",
+    "openpyxl>=3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "black>=24.0",
+    "ruff>=0.6"
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+```

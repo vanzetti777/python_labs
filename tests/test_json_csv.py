@@ -125,3 +125,82 @@ def test_csv_to_json_file_not_found():
 def test_json_to_csv_file_not_found():
     with pytest.raises(FileNotFoundError):
         json_to_csv("nonexistent.json", "output.csv")
+
+
+# КОЛВО ЗАПИСЕЙ СОВПАДАЕТ
+def test_json_to_csv_record_count(tmp_path: Path):
+    src = tmp_path / "people.json"
+    dst = tmp_path / "people.csv"
+    data = [
+        {"name": "Alice", "age": 22},
+        {"name": "Bob", "age": 25},
+        {"name": "Charlie", "age": 30},
+    ]
+    src.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    json_to_csv(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    assert len(rows) == 3
+
+
+def test_csv_to_json_record_count(tmp_path: Path):
+    src = tmp_path / "data.csv"
+    dst = tmp_path / "data.json"
+
+    csv_data = [
+        {"name": "Alice", "age": "22"},
+        {"name": "Bob", "age": "25"},
+        {"name": "Charlie", "age": "30"},
+        {"name": "David", "age": "35"},
+    ]
+
+    with src.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["name", "age"])
+        writer.writeheader()
+        writer.writerows(csv_data)
+    csv_to_json(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        result_data = json.load(f)
+
+    assert len(result_data) == 4
+
+
+# ПРОВЕРКА ЗАГОЛОВКОВ
+def test_json_to_csv_field_names(tmp_path: Path):
+    src = tmp_path / "people.json"
+    dst = tmp_path / "people.csv"
+    data = [
+        {"name": "Alice", "age": 22, "city": "Moscow"},
+        {"name": "Bob", "age": 25, "city": "London"},
+    ]
+    src.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    json_to_csv(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    assert set(rows[0].keys()) == {"name", "age", "city"}
+
+
+def test_csv_to_json_field_names(tmp_path: Path):
+    src = tmp_path / "data.csv"
+    dst = tmp_path / "data.json"
+
+    csv_data = [
+        {"name": "Alice", "age": "22", "city": "Moscow", "country": "Russia"},
+        {"name": "Bob", "age": "25", "city": "London", "country": "UK"},
+    ]
+
+    with src.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["name", "age", "city", "country"])
+        writer.writeheader()
+        writer.writerows(csv_data)
+    csv_to_json(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        result_data = json.load(f)
+
+    assert set(result_data[0].keys()) == {"name", "age", "city", "country"}
