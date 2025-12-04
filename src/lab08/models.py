@@ -10,8 +10,6 @@ class Student:
     gpa: float
 
     def __post_init__(self):
-
-        # проверка на полноенность полей (сюда приятнее)
         if self.fio is None or self.fio.strip() is None:
             raise ValueError("поле 'fio' обязательно для заполнения")
         if self.birthdate is None:
@@ -21,7 +19,6 @@ class Student:
         if self.gpa is None:
             raise ValueError("поле 'gpa' обязательно для заполнения")
 
-        # проверка на типы данных
         if not isinstance(self.fio, str):
             raise TypeError(f"не str")
         if not isinstance(self.birthdate, str):
@@ -31,26 +28,21 @@ class Student:
         if not isinstance(self.gpa, (int, float)):
             raise TypeError(f"не float")
 
-        # дата
         try:
-            datetime.strptime(self.birthdate, "%Y-%m-%d")  # чтобы по шаблону даты
+            datetime.strptime(self.birthdate, "%Y-%m-%d")
         except ValueError:
             raise ValueError(
                 f"неверный формат даты: '{self.birthdate}' ожидается YYYY-MM-DD"
             )
 
-        # GPA
         if not (0 <= self.gpa <= 5):
             raise ValueError(f"GPA {self.gpa} должен быть от 0 до 5")
 
     def age(self) -> int:
-        # зачем нам 2я валидация, мы уже до этого все проверили??
-        # преобразуем строку birthdate в настоящее время
         birth_date = datetime.strptime(self.birthdate, "%Y-%m-%d").date()
         today = date.today()
         age = today.year - birth_date.year
 
-        # если др еще не наступил
         if (today.month, today.day) < (birth_date.month, birth_date.day):
             age -= 1
 
@@ -66,18 +58,14 @@ class Student:
 
     @classmethod
     def from_dict(cls, d: dict):
-        # Десериализуем объект Student из словаря
-        # Проверяем наличие всех необходимых полей
         required_fields = ["fio", "birthdate", "group", "gpa"]
         for field in required_fields:
             if field not in d:
                 raise ValueError(f"Отсутствует обязательное поле: {field}")
 
-        # Создаем и возвращаем новый объект Student
         return cls(
             fio=d["fio"], birthdate=d["birthdate"], group=d["group"], gpa=d["gpa"]
         )
 
     def __str__(self):
-        # Возвращаем красивое строковое представление объекта
         return f"Студент: {self.fio}, Группа: {self.group}, GPA: {self.gpa:.2f}, Возраст: {self.age()} лет"
