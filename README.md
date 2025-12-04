@@ -1329,6 +1329,20 @@ def students_from_json(path: str) -> List[Student]:
     return students
 ```
 
+проверки
+
+при попытке неправильной записи без какогото аргумента выводится ошибка, она идет перед postinit, поэтому я её не трогала
+```python
+student3 = Student(
+    fio="Петрова Анна Сергеевна",
+    birthdate="2001-08-22",
+    group="AI-03",
+
+)
+```
+
+базовый to json
+
 ```python
 from .models import Student
 from .serialize import students_to_json, students_from_json
@@ -1346,22 +1360,8 @@ student2 = Student(
     gpa=4.8
 )
 
-# Сохраняем в JSON
 students_to_json([student1, student2], "data/lab08/students_output.json")
 ```
-
-проверки
-
-при попытке неправильной записи без какогото аргумента выводится ошибка, она идет перед postinit, поэтому я её не трогала
-```python
-student3 = Student(
-    fio="Петрова Анна Сергеевна",
-    birthdate="2001-08-22",
-    group="AI-03",
-
-)
-```
-
 
 ![alt text](img/image8/1.png)
 
