@@ -10,14 +10,6 @@ class Student:
     gpa: float
 
     def __post_init__(self):
-        if self.fio is None or self.fio.strip() is None:
-            raise ValueError("поле 'fio' обязательно для заполнения")
-        if self.birthdate is None:
-            raise ValueError("поле 'birthdate' обязательно для заполнения")
-        if self.group is None:
-            raise ValueError("поле 'group' обязательно для заполнения")
-        if self.gpa is None:
-            raise ValueError("поле 'gpa' обязательно для заполнения")
 
         if not isinstance(self.fio, str):
             raise TypeError(f"не str")
