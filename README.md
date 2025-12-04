@@ -1336,7 +1336,6 @@ student3 = Student(
 ```python
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from lab08.models import Student
 from lab08.serialize import students_to_json, students_from_json
