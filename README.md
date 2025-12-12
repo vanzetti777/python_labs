@@ -1624,3 +1624,5 @@ print("\n=== ураураура ===")
 
 ![alt text](img/image9/image.png)
 ![alt text](<img/image9/image copy.png>)
+![alt text](<img/image9/image copy 2.png>)
+![alt text](<img/image9/image copy 3.png>)
