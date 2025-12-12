@@ -1,8 +1,7 @@
 import csv
 from pathlib import Path
-from datetime import datetime
-from typing import List, Optional
-from src.lab08.models import Student
+from typing import List
+from lab08.models import Student
 
 
 class Group:
@@ -11,12 +10,17 @@ class Group:
         self.path = Path(storage_path)
         self._ensure_storage_exists()
     def _ensure_storage_exists(self) -> None:
-        # cоздаёт файл с заголовком, если его нет
+    # создаём файл, только если он НЕ существует
         if not self.path.exists():
-            self.path.parent.mkdir(parents=True, exist_ok=True)
+            # создаём директорию, но только если её нет
+            if not self.path.parent.exists():
+                self.path.parent.mkdir(parents=True)
+        
+            # создаём CSV-файл с заголовком
             with open(self.path, 'w', encoding='utf-8', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=['fio', 'birthdate', 'group', 'gpa'])
                 writer.writeheader()
+
     
     def _read_all(self) -> List[dict]:
         # читает как список словарей с данными студентов*
