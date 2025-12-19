@@ -1626,3 +1626,325 @@ print("\n=== ураураура ===")
 ![alt text](<img/image9/image copy.png>)
 ![alt text](<img/image9/image copy 2.png>)
 ![alt text](<img/image9/image copy 3.png>)
+# Лабораторная работа 10
+## коды 
+``` python
+from collections import deque
+from typing import Any, Optional
+
+
+class Stack:
+    
+    def __init__(self):
+        self._data: list[Any] = []
+    
+    def push(self, item: Any) -> None:
+        # добавить элемент на вершину стека
+        self._data.append(item)
+    
+    def pop(self) -> Any:
+        # удалить и вернуть верхний элемент стека
+        if self.is_empty():
+            raise IndexError("Нельзя выполнить pop из пустого стека")
+        return self._data.pop()
+    
+    def peek(self) -> Optional[Any]:
+        # вернуть верхний элемент стека без удаления
+        if self.is_empty():
+            return None
+        return self._data[-1]
+    
+    def is_empty(self) -> bool:
+        # проверить, пуст ли стек
+        return len(self._data) == 0
+    
+    def __len__(self) -> int:
+        # вернуть количество элементов в стеке
+        return len(self._data)
+    
+    def __str__(self) -> str:
+        # строковое представление стека
+        return f"Stack({self._data})"
+    
+    def __repr__(self) -> str:
+        # репрезентативное строковое представление
+        return self.__str__()
+
+
+class Queue:
+
+    def __init__(self):
+        self._data: deque[Any] = deque()
+    
+    def enqueue(self, item: Any) -> None:
+        # добавить элемент в конец очереди
+        self._data.append(item)
+    
+    def dequeue(self) -> Any:
+        # удалить и вернуть первый элемент очереди
+
+        if self.is_empty():
+            raise IndexError("Нельзя выполнить dequeue из пустой очереди")
+        return self._data.popleft()
+    
+    def peek(self) -> Optional[Any]:
+        # вернуть первый элемент очереди без удаления
+
+        if self.is_empty():
+            return None
+        return self._data[0]
+    
+    def is_empty(self) -> bool:
+        # проверить, пуста ли очередь
+        return len(self._data) == 0
+```
+```python
+from typing import Any, Optional, Iterator
+
+class Node:
+    # узел односвязного списка
+    
+    def __init__(self, value: Any, next_node: Optional['Node'] = None):
+
+        self.value = value
+        self.next = next_node
+    
+class SinglyLinkedList:
+    # односвязный список
+    
+    def __init__(self):
+        self.head: Optional[Node] = None
+        self.tail: Optional[Node] = None
+        self._size: int = 0
+    
+    def append(self, value: Any) -> None:
+        # добавить элемент в конец списка.
+
+        new_node = Node(value)
+        
+        if self.head is None:  # Список пуст
+            self.head = new_node
+            self.tail = new_node
+        else:  # Список не пуст
+            self.tail.next = new_node  # type: ignore
+            self.tail = new_node
+        
+        self._size += 1
+    
+    def prepend(self, value: Any) -> None:
+        # добавить элемент в начало списка.
+
+        new_node = Node(value, self.head)
+        self.head = new_node
+        
+        # если список был пуст, обновляем tail
+        if self.tail is None:
+            self.tail = new_node
+        
+        self._size += 1
+    
+    def insert(self, idx: int, value: Any) -> None:
+        #вставить элемент по индексу.
+
+        if idx < 0 or idx > self._size:
+            raise IndexError(f"Индекс {idx} вне диапазона [0, {self._size}]")
+        
+        # вставка в начало
+        if idx == 0:
+            self.prepend(value)
+            return
+        
+        # вставка в конец
+        if idx == self._size:
+            self.append(value)
+            return
+        
+        # вставка в середину
+        current = self.head
+        for _ in range(idx - 1):
+            current = current.next  # type: ignore
+        
+        new_node = Node(value, current.next)  # type: ignore
+        current.next = new_node  # type: ignore
+        self._size += 1
+    
+    def remove_at(self, idx: int) -> None:
+
+        # удалить элемент по индексу.
+
+        if idx < 0 or idx >= self._size:
+            raise IndexError(f"Индекс {idx} вне диапазона [0, {self._size - 1}]")
+        
+        # удаление первого элемента
+        if idx == 0:
+            self.head = self.head.next  # type: ignore
+            # если список стал пустым, обновляем tail
+            if self.head is None:
+                self.tail = None
+        else:
+            # находим элемент перед удаляемым
+            current = self.head
+            for _ in range(idx - 1):
+                current = current.next  # type: ignore
+            
+            # пропускаем удаляемый элемент
+            current.next = current.next.next  
+            
+            # если удалили последний элемент, обновляем tail
+            if current.next is None:  # type: ignore
+                self.tail = current  # type: ignore
+        
+        self._size -= 1
+    
+    def __iter__(self) -> Iterator[Any]:
+        #итератор по значениям списка
+        current = self.head
+        while current is not None:
+            yield current.value
+            current = current.next
+    
+    def __len__(self) -> int:
+        # количество элементов в списке
+        return self._size
+    
+    def __repr__(self) -> str:
+        """Репрезентативное строковое представление."""
+        values = list(self)
+        return f"SinglyLinkedList({values})"
+```
+# проверка
+```python
+from lab10.structures import Stack, Queue
+from lab10.linked_list import SinglyLinkedList
+
+def test_stack():
+    print("тест стека")
+    s = Stack()
+    print("пустой стек создан")
+    
+    # тест push и peek
+    s.push(1); s.push(2)
+    print(f"push(1), push(2) выполнено")
+    print(f"peek() = {s.peek()} (ожидается 2)")
+    
+    # тест pop
+    print(f"pop() = {s.pop()} (ожидается 2)")
+    print(f"pop() = {s.pop()} (ожидается 1)")
+    print(f"is_empty() = {s.is_empty()} (ожидается true)")
+    
+    # тест исключения
+    try:
+        s.pop()
+    except IndexError as e:
+        print(f"исключение при pop() из пустого стека: {e}")
+    
+    print("ура стек работает\n")
+
+def test_queue():
+    print("тест очереди")
+    
+    q = Queue()
+    print("пустая очередь создана")
+    
+    # тест enqueue и peek
+    q.enqueue(1); q.enqueue(2)
+    print(f"enqueue(1), enqueue(2) выполнено")
+    print(f"peek() = {q.peek()} (ожидается 1)")
+    
+    # тест dequeue
+    print(f"dequeue() = {q.dequeue()} (ожидается 1)")
+    print(f"dequeue() = {q.dequeue()} (ожидается 2)")
+    print(f"is_empty() = {q.is_empty()} (ожидается true)")
+    
+    # тест исключения
+    try:
+        q.dequeue()
+    except IndexError as e:
+        print(f"исключение при dequeue() из пустой очереди: {e}")
+    
+    print("ура очередь работает\n")
+
+def test_linked_list():
+    print("тест списка\n")
+    lst = SinglyLinkedList()
+    print(f"пустой список создан, len={len(lst)}\n")
+    
+    # тест append
+    lst.append(1); lst.append(2); lst.append(3)
+    print(f"append(1,2,3)")
+    print(f"список: {lst}")
+    print()
+    
+    # тест prepend
+    lst.prepend(0)
+    print(f"prepend(0)")
+    print(f"список: {lst}")
+    print()
+    
+    # тест insert
+    lst.insert(2, 1.5)
+    print(f"insert(2, 1.5)")
+    print(f"список: {lst}")
+    print()
+    
+    lst.insert(0, -1)
+    print(f"insert(0, -1)")
+    print(f"список: {lst}")
+    print()
+    
+    lst.insert(len(lst), 4)
+    print(f"insert({len(lst)-1}, 4)")
+    print(f"список: {lst}")
+    print()
+    
+    print(f"list(lst) = {list(lst)}\n")
+    
+    # тест remove_at
+    lst.remove_at(2)
+    print(f"remove_at(2) - удалили элемент на позиции 2")
+    print(f"список: {lst}")
+    print()
+    
+    lst.remove_at(0)
+    print(f"remove_at(0) - удалили первый элемент")
+    print(f"список: {lst}")
+    print()
+    
+    lst.remove_at(len(lst)-1)
+    print(f"remove_at({len(lst)-1}) - удалили последний элемент")
+    print(f"список: {lst}")
+    print()
+
+    # тест __iter__
+    print(f"итерация по списку: {[x for x in lst]}\n")
+    
+    # тест __len__
+    print(f"длина списка: {len(lst)}\n")
+    
+    # тест __repr__
+    print(f"repr списка: {repr(lst)}\n")
+    
+    # тест исключений
+    try:
+        lst.insert(10, 5)
+    except IndexError as e:
+        print(f"исключение insert(10,5): {e}\n")
+    
+    try:
+        lst.remove_at(10)
+    except IndexError as e:
+        print(f"исключение remove_at(10): {e}\n")
+    
+    print(f"итоговый список: {lst}")
+    print(f"итоговая длина: {len(lst)}")
+
+if __name__ == "__main__":
+    test_stack()
+    print("@" * 40)
+    test_queue()
+    print("@" * 40)
+    test_linked_list()
+    print("\nвсе тесты завершены")
+```
+![alt text](img/image10/image.png)
+![alt text](<img/image10/image copy.png>)
