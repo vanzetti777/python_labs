@@ -1,14 +1,32 @@
+"""
+Модуль с классом Product для представления товара
+"""
+from .validate import Validator  # относительный импорт
+
+
 class Product:
+    """Класс для представления товара в магазине"""
+    
     default_discount = 0.05
     tax_rate = 0.20
+    
     def __init__(self, name: str, price: float, amount: int, status: str = "in_stock"):
-        # для проверки
-        self._check_name(name)
-        self._check_price(price)
-        self._check_amount(amount)
-        self._check_status(status)
+        """
+        Инициализация товара
         
-        # закрытые атрибуты
+        Args:
+            name: название товара
+            price: цена товара
+            amount: количество на складе
+            status: статус товара
+        """
+        # Валидация через класс Validator
+        Validator.check_name(name)
+        Validator.check_price(price)
+        Validator.check_amount(amount)
+        Validator.check_status(status)
+        
+        # Закрытые атрибуты
         self._name = name
         self._price = price
         self._amount = amount
@@ -16,82 +34,60 @@ class Product:
 
         self._update_status()
     
-    # приватные методы проверки
-    def _check_name(self, name):
-        """Проверка названия товара"""
-        if not isinstance(name, str):
-            raise TypeError("должно быть строкой")
-        if not name.strip():
-            raise ValueError("не может быть пустым")
-        if len(name) > 20:
-            raise ValueError("не может быть длиннее 20 символов")
-    
-    def _check_price(self, price):
-        """Проверка цены"""
-        if not isinstance(price, (int, float)):
-            raise TypeError("должна быть числом")
-        if price < 0:
-            raise ValueError("не может быть отрицательной")
-        if price > 1000000:
-            raise ValueError("не может быть больше 1000000")
-    
-    def _check_amount(self, amount):
-        """Проверка количества на складе"""
-        if not isinstance(amount, int):
-            raise TypeError("должно быть целым числом")
-        if amount < 0:
-            raise ValueError("не может быть отрицательным")
-    
-    def _check_status(self, status):
-        """Проверка статуса товара"""
-        allowed_statuses = ["in_stock", "out_of_stock", "discontinued", "preorder"]
-        if not isinstance(status, str):
-            raise TypeError("должен быть строкой")
-        if status not in allowed_statuses:
-            raise ValueError(f"должен быть одним из: {allowed_statuses}")
-
     def _update_status(self):
         """Обновление статуса на основе количества"""
-        if self._amount <= 0:
-            if self._status != "discontinued":
-                self._status = "out_of_stock"
+        if self._amount <= 0 and self._status != "discontinued":
+            self._status = "out_of_stock"
+        elif self._amount > 0 and self._status == "out_of_stock":
+            self._status = "in_stock"
 
-    # cвойства для доступа к закрытым атрибутам
+    # Свойства для доступа к закрытым атрибутам
     @property
     def name(self):
-        """для названия"""
+        """Геттер для названия"""
         return self._name
     
     @property
     def price(self):
-        """для цены"""
+        """Геттер для цены"""
         return self._price
     
     @price.setter
     def price(self, value):
+        """Сеттер для цены с валидацией"""
         if self._status == "discontinued":
             raise ValueError("нельзя изменить цену товара, снятого с производства")
-        self._check_price(value)
+        Validator.check_price(value)
         old_price = self._price
         self._price = value
-        print(f"изменено: {old_price} руб. - {self._price} руб.")
+        print(f"цена изменена: {old_price} руб. -> {self._price} руб.")
     
     @property
     def amount(self):
-        """для количества"""
+        """Геттер для количества"""
         return self._amount
+    
+    @amount.setter
+    def amount(self, value):
+        """Сеттер для количества с валидацией и обновлением статуса"""
+        if self._status == "discontinued":
+            raise ValueError("нельзя изменить количество товара, снятого с производства")
+        Validator.check_amount(value)
+        self._amount = value
+        self._update_status()
+        print(f"количество изменено на {self._amount} шт.")
     
     @property
     def status(self):
-        """для статуса"""
+        """Геттер для статуса"""
         return self._status
     
-    # магические методы
+    # Магические методы
     def __str__(self):
         """
         Строковое представление для пользователя
         """
-        # для перевода статусов
+        # Перевод статусов
         status_translation = {
             "in_stock": "В наличии",
             "out_of_stock": "Нет в наличии",
@@ -105,7 +101,7 @@ class Product:
                 f"Статус: {status_text}")
     
     def __repr__(self):
-        """формальное представление"""
+        """Формальное представление для разработчиков"""
         return (f"Product('{self._name}', {self._price}, {self._amount}, '{self._status}')")
 
     def __eq__(self, other):
@@ -123,7 +119,15 @@ class Product:
         return self._price * self._amount
     
     def can_be_sold(self, requested_amount=1):
-        """Проверка возможности продажи"""
+        """
+        Проверка возможности продажи
+        
+        Args:
+            requested_amount: запрашиваемое количество
+            
+        Returns:
+            tuple: (можно ли продать, сообщение)
+        """
         if self._status == "discontinued":
             return False, "товар снят с производства"
         if self._status == "out_of_stock":
@@ -152,18 +156,36 @@ class Product:
         print(f"товар '{self._name}' снят с производства")
     
     def restock(self, amount):
-        """Пополнение запасов"""
+        """
+        Пополнение запасов
+        
+        Args:
+            amount: количество для пополнения
+        """
         if self._status == "discontinued":
             raise ValueError("нельзя пополнить товар, снятый с производства")
         
-        self._check_amount(amount)
+        Validator.check_amount(amount)
+        Validator.check_positive_amount(amount, "пополнения")
+        
         self._amount += amount
         self._update_status()
         print(f"запас товара '{self._name}' пополнен на {amount} шт.")
     
     def purchase(self, amount=1):
-        """Покупка товара"""
-        # проверка возможности продажи
+        """
+        Покупка товара
+        
+        Args:
+            amount: количество для покупки
+            
+        Returns:
+            float: общая стоимость покупки
+        """
+        # Проверка корректности количества
+        Validator.check_positive_amount(amount, "покупки")
+        
+        # Проверка возможности продажи
         can_sell, message = self.can_be_sold(amount)
         if not can_sell:
             raise ValueError(f"невозможно купить: {message}")

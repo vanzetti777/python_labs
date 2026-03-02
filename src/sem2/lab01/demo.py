@@ -1,27 +1,32 @@
+"""
+Демонстрационный модуль для работы с классом Product
+"""
 from sem2.lab01.model import Product
 
+
 def demonstrate():
+    """Основная функция демонстрации"""
     print("Демонстрация работы класса Product (вариант 3)")
     print("Аргументы: name, price, amount, status")
     
     print("\nСоздание объектов:")
     
-    # cоздаем товары
+    # Создаем товары
     product1 = Product("Ноутбук", 75000, 10, "in_stock")
     product2 = Product("Смартфон", 25000, 0, "out_of_stock")
     product3 = Product("Планшет", 50000, 5, "preorder")
     product4 = Product("Плеер", 5000, 2, "discontinued")
     
-    print(" ТОВАР 1:")
+    print("\nТОВАР 1:")
     print(product1)
     
-    print(" ТОВАР 2:")
+    print("\nТОВАР 2:")
     print(product2)
     
-    print(" ТОВАР 3:")
+    print("\nТОВАР 3:")
     print(product3)
     
-    print(" ТОВАР 4:")
+    print("\nТОВАР 4:")
     print(product4)
 
     print("\n__repr__:")
@@ -29,9 +34,9 @@ def demonstrate():
     print(f"repr(product2): {repr(product2)}")
 
     print("\nАтрибуты класса:")
-    print(f" Скидка по умолчанию: {Product.default_discount*100}%")
-    print(f" НДС: {Product.tax_rate*100}%")
-    print(f" Скидка по умолчанию экземпляра: {product1.default_discount*100}%")
+    print(f"Скидка по умолчанию: {Product.default_discount*100}%")
+    print(f"НДС: {Product.tax_rate*100}%")
+    print(f"Скидка по умолчанию экземпляра: {product1.default_discount*100}%")
     
     print("\nИЗМЕНЕНИЕ АТРИБУТА КЛАССА:")
 
@@ -55,7 +60,7 @@ def demonstrate():
     print("\nТОВАР ПОСЛЕ ИЗМЕНЕНИЯ ЦЕНЫ:")
     print(product1)
     
-    print("\nПроверка setter:")
+    print("\nПроверка setter (валидация через Validator):")
     
     try:
         print("попытка установить отрицательную цену:")
@@ -75,58 +80,58 @@ def demonstrate():
     except TypeError as e:
         print(f"Ошибка: {e}")
     
-    #ВЫВОД
-    print("\nВывод пользователю с _str_")
+    # ВЫВОД
+    print("\nВывод пользователю с __str__:")
     print(product1)
     print(product2)
     
-    #СРАВНЕНИЕ
-    print("\nСравнение c __eq__")
+    # СРАВНЕНИЕ
+    print("\nСравнение c __eq__:")
     
-    product5 = Product("Ноутбук", 80000, 5, "in_stock")  #другая цена!!
-    product6 = Product("Электронные часы", 1500, 20, "in_stock")  #другое название!!
+    product5 = Product("Ноутбук", 80000, 5, "in_stock")  # другая цена!!
+    product6 = Product("Электронные часы", 1500, 20, "in_stock")  # другое название!!
     
-    print(f" product1 (Ноутбук) == product5 (Ноутбук): {product1 == product5}")
-    print(f" product1 (Ноутбук ASUS) == product6 (Электронные часы): {product1 == product6}")
-    print(f" product1 == product1 (тот же объект): {product1 == product1}")
+    print(f"product1 (Ноутбук) == product5 (Ноутбук): {product1 == product5}")
+    print(f"product1 (Ноутбук) == product6 (Электронные часы): {product1 == product6}")
+    print(f"product1 == product1 (тот же объект): {product1 == product1}")
     
-    #БИЗНЕС-МЕТОДы
-    print("\n1БИЗНЕС-МЕТОД total_value():")
-    print(f" Товар: {product1.name}")
+    # БИЗНЕС-МЕТОДЫ
+    print("\nБИЗНЕС-МЕТОД total_value():")
+    print(f"Товар: {product1.name}")
     print(f"Цена: {product1.price} руб. * {product1.amount} шт. = {product1.total_value()} руб.")
     
-    print(f" Товар: {product2.name}")
+    print(f"\nТовар: {product2.name}")
     print(f"Цена: {product2.price} руб. × {product2.amount} шт. = {product2.total_value()} руб.")
     
-    print(f" Товар: {product4.name} (снят с производства)")
+    print(f"\nТовар: {product4.name} (снят с производства)")
     print(f"Общая стоимость: {product4.total_value():,.2f} руб. (не продается)")
     
-    print("\n2БИЗНЕС-МЕТОД can_be_sold():")
+    print("\nБИЗНЕС-МЕТОД can_be_sold():")
 
-    print(f" Товар: {product1.name}")
+    print(f"Товар: {product1.name}")
     can_sell, message = product1.can_be_sold(3)
     print(f"{message}")
     
-    print(f"\n Товар: {product2.name}")
+    print(f"\nТовар: {product2.name}")
     can_sell, message = product2.can_be_sold(1)
     print(f"{message}")
     
-    print(f"\n Товар: {product3.name}")
+    print(f"\nТовар: {product3.name}")
     can_sell, message = product3.can_be_sold(2)
     print(f"{message}")
     
-    print(f"\n Товар: {product4.name}")
+    print(f"\nТовар: {product4.name}")
     can_sell, message = product4.can_be_sold(1)
     print(f"{message}")
 
-    print("\nФОРМАТИРОВАНИE:")
+    print("\nФОРМАТИРОВАНИЕ:")
 
     # Создаем товар с большими числами
     big_product = Product("Супер комп", 999999, 10000, "in_stock")
     print("Товар:")
     print(big_product)
 
-    print("МЕТОДЫ ИЗМЕНЕНИЯ СОСТОЯНИЯ")
+    print("\nМЕТОДЫ ИЗМЕНЕНИЯ СОСТОЯНИЯ:")
 
     # Создаем товар для демонстрации
     test_product = Product("Телефон", 50000, 3, "in_stock")
@@ -173,7 +178,7 @@ def demonstrate():
         print(f"Ошибка: {e}")  
 
     # Создаем новый товар для демонстрации restock
-    print("СОЗДАЕМ НОВЫЙ ТОВАР ДЛЯ RESTOCK:")
+    print("\nСОЗДАЕМ НОВЫЙ ТОВАР ДЛЯ RESTOCK:")
     fresh_product = Product("Наушники", 5000, 2, "in_stock")
     print(fresh_product)
 
@@ -208,7 +213,7 @@ def demonstrate():
     print("\nТОВАР ПОСЛЕ ПОКУПКИ:")
     print(fresh_product)
     
-    print("ДЕМОНСТРАЦИЯ СЦЕНАРИЕВ РАБОТЫ")
+    print("\nДЕМОНСТРАЦИЯ СЦЕНАРИЕВ РАБОТЫ:")
 
     print("\nСЦЕНАРИЙ 1: НОРМАЛЬНАЯ ПОКУПКА")
 
@@ -251,8 +256,8 @@ def demonstrate():
     except Exception as e:
         print(f"Ошибка: {e}")  
 
-    # Ошибки
-    print("\nОшибки:")
+    # Ошибки валидации при создании
+    print("\nОШИБКИ ВАЛИДАЦИИ ПРИ СОЗДАНИИ (через Validator):")
     test_cases = [
         ("тип названия", 
          {"name": 12345, "price": 100, "amount": 10, "status": "in_stock"}),
@@ -261,13 +266,13 @@ def demonstrate():
          {"name": "", "price": 100, "amount": 10, "status": "in_stock"}),
         
         ("слишком длинное название", 
-         {"name": "A" * 10000, "price": 100, "amount": 10, "status": "in_stock"}),
+         {"name": "A" * 100, "price": 100, "amount": 10, "status": "in_stock"}),
         
         ("отрицательная цена", 
          {"name": "Тест", "price": -500, "amount": 10, "status": "in_stock"}),
         
         ("цена слишком большая", 
-         {"name": "Тест", "price": 800000000000, "amount": 10, "status": "in_stock"}),
+         {"name": "Тест", "price": 2_000_000, "amount": 10, "status": "in_stock"}),
         
         ("цена не число", 
          {"name": "Тест", "price": "1000", "amount": 10, "status": "in_stock"}),
@@ -281,7 +286,7 @@ def demonstrate():
         ("некорректный статус", 
          {"name": "Тест", "price": 100, "amount": 10, "status": "blabalbal"}),
         
-        ("cтатус не строка", 
+        ("статус не строка", 
          {"name": "Тест", "price": 100, "amount": 10, "status": 123}),
     ]
     
@@ -289,9 +294,10 @@ def demonstrate():
         print(f"\nПопытка: {description}")
         try:
             Product(**kwargs)
-            print("Успешно создан (ERROR)")
+            print("Успешно создан (ОШИБКА - должно быть исключение)")
         except (TypeError, ValueError) as e:
             print(f"Ошибка: {e}")
+
 
 if __name__ == "__main__":
     demonstrate()
