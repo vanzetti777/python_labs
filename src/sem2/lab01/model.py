@@ -1,25 +1,12 @@
-"""
-Модуль с классом Product для представления товара
-"""
-from .validate import Validator  # относительный импорт
+from .validate import Validator 
 
 
 class Product:
-    """Класс для представления товара в магазине"""
     
     default_discount = 0.05
     tax_rate = 0.20
     
     def __init__(self, name: str, price: float, amount: int, status: str = "in_stock"):
-        """
-        Инициализация товара
-        
-        Args:
-            name: название товара
-            price: цена товара
-            amount: количество на складе
-            status: статус товара
-        """
         # Валидация через класс Validator
         Validator.check_name(name)
         Validator.check_price(price)
@@ -101,33 +88,21 @@ class Product:
                 f"Статус: {status_text}")
     
     def __repr__(self):
-        """Формальное представление для разработчиков"""
         return (f"Product('{self._name}', {self._price}, {self._amount}, '{self._status}')")
 
     def __eq__(self, other):
-        """Сравнение товаров по названию"""
         if not isinstance(other, Product):
             return False
         return self._name == other._name
     
     # Бизнес-методы
     def total_value(self):
-        """Расчет общей стоимости товара на складе"""
         if self._status == "discontinued":
             return 0  # снятый с производства товар не продается
         
         return self._price * self._amount
     
     def can_be_sold(self, requested_amount=1):
-        """
-        Проверка возможности продажи
-        
-        Args:
-            requested_amount: запрашиваемое количество
-            
-        Returns:
-            tuple: (можно ли продать, сообщение)
-        """
         if self._status == "discontinued":
             return False, "товар снят с производства"
         if self._status == "out_of_stock":
@@ -137,7 +112,6 @@ class Product:
         return True, "товар доступен для продажи"
     
     def activate(self):
-        """Возврат товара в продажу"""
         if self._status != "discontinued":
             raise ValueError("товар не находится в статусе 'снят с производства'")
         
@@ -145,7 +119,6 @@ class Product:
         print(f"товар '{self._name}' возвращен в продажу")
     
     def discontinue(self):
-        """Снятие товара с производства"""
         if self._status == "discontinued":
             raise ValueError("товар уже снят с производства")
         
@@ -156,12 +129,6 @@ class Product:
         print(f"товар '{self._name}' снят с производства")
     
     def restock(self, amount):
-        """
-        Пополнение запасов
-        
-        Args:
-            amount: количество для пополнения
-        """
         if self._status == "discontinued":
             raise ValueError("нельзя пополнить товар, снятый с производства")
         
@@ -173,15 +140,6 @@ class Product:
         print(f"запас товара '{self._name}' пополнен на {amount} шт.")
     
     def purchase(self, amount=1):
-        """
-        Покупка товара
-        
-        Args:
-            amount: количество для покупки
-            
-        Returns:
-            float: общая стоимость покупки
-        """
         # Проверка корректности количества
         Validator.check_positive_amount(amount, "покупки")
         

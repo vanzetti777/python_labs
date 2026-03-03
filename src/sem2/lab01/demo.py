@@ -1,11 +1,7 @@
-"""
-Демонстрационный модуль для работы с классом Product
-"""
 from sem2.lab01.model import Product
 
 
 def demonstrate():
-    """Основная функция демонстрации"""
     print("Демонстрация работы класса Product (вариант 3)")
     print("Аргументы: name, price, amount, status")
     
