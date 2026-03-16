@@ -12,13 +12,6 @@
 **Класс** - Product
 
 **Защищённые атрибуты экземпляра** - имя, цена, состояние и кол-во на складе.
-```python
-self._name = name      
-self._price = price    
-self._amount = amount  
-self._status = status  
-```
-
 ## Управление доступом через @property
 
 Состояние экземпляра контролируем через @property:
@@ -30,53 +23,22 @@ self._status = status
 ## Атрибуты класса
 
 **Атрибуты класса** - скидка и ндс
-```python
-default_discount = 0.05  
-tax_rate = 0.20          
-```
 
 ## Валидация (файл validate.py)
 
-В файле Validate я вынесла все проверки, такие как:
+В файле Validate я вынесла все проверки через @classmetod, такие как:
 - **Проверка типа данных** 
 - **Проверка диапазона** 
 - **Проверка допустимых значений** (статус должен быть из списка)
-
-```python
-class Validator:
-    @classmethod
-    def check_name(cls, name):     # проверка названия
-    @classmethod
-    def check_price(cls, price):    # проверка цены
-    @classmethod
-    def check_amount(cls, amount):  # проверка количества
-    @classmethod
-    def check_status(cls, status):  # проверка статуса
-```
 
 ## Магические методы
 
 **Магические методы:**
 - **`__str__`** - красивый вывод для пользователя
-  ```python
-  def __str__(self):
-      # перевод статусов на русский
-      # форматирование цены с разделителями
-  ```
 
 - **`__repr__`** - вывод для разработчика
-  ```python
-  def __repr__(self):
-      return f"Product('{self._name}', {self._price}, {self._amount}, '{self._status}')"
-  ```
 
 - **`__eq__`** - сравнение товаров
-  ```python
-  def __eq__(self, other):
-      if not isinstance(other, Product):
-          return False
-      return self._name == other._name
-  ```
 
 ## Бизнес-методы
 
@@ -93,14 +55,6 @@ class Validator:
 **Логическое состояние:**
 - **обновление статуса наличия** (`_update_status()`)
 
-```python
-def _update_status(self):
-    """Обновление статуса на основе количества"""
-    if self._amount <= 0 and self._status != "discontinued":
-        self._status = "out_of_stock"
-    elif self._amount > 0 and self._status == "out_of_stock":
-        self._status = "in_stock"
-```
 
 ## DEMO
 ```python
