@@ -1,1 +1,1 @@
-[text](labs/lab01.md)
+[LAB01](labs/lab01.md)
