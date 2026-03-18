@@ -6,3 +6,17 @@
 src/python_labs.egg-info/
 
 .pyproject.toml
+
+._pycache_
+
+.vscode/
+.DS_Store
+.cache/
+.local/
+__pycache__/
+venv/
+env/
+.venv/
+.env
+.pytest_cache
+build/Debug
