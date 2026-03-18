@@ -1,1 +1,1 @@
-[LAB01](labs/lab01.md)
+[LAB01](src/sem2/lab01/lab01.md)

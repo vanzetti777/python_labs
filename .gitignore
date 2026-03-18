@@ -1,7 +1,6 @@
 # coverage 
 .coverage
 
-.pytest_cache
 
 src/python_labs.egg-info/
 
