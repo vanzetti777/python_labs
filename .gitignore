@@ -1,11 +1,6 @@
 # coverage 
 .coverage
 
-
-src/python_labs.egg-info/
-
-.pyproject.toml
-
 ._pycache_
 
 .vscode/
