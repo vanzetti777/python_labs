@@ -1,5 +1,5 @@
 from typing import List, Optional, Callable
-from .model import Product
+from sem2.lab03.base import Product 
 
 
 class ProductCatalog:
@@ -7,13 +7,14 @@ class ProductCatalog:
     def __init__(self):
         self._items: List[Product] = []
     
-    def add(self, item: Product) -> None:
+    def add(self, item) -> None:
+    # Проверяем, является ли item наследником Product
         if not isinstance(item, Product):
-            raise TypeError(f"Можно добавлять только объекты Product, получен {type(item).__name__}")
-        
+            raise TypeError(f"Можно добавлять только объекты Product или его наследников, получен {type(item).__name__}")
+    
         if self._find_by_name(item.name) is not None:
             raise ValueError(f"Товар с названием '{item.name}' уже существует в коллекции")
-        
+    
         self._items.append(item)
     
     def remove(self, item: Product) -> None:
