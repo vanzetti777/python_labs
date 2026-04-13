@@ -6,10 +6,10 @@
 **Интернет-магазин**
 
 Реализованная иерархия классов на основе `Product` из ЛР-1:
-Product (Базовый класс)
--FoodProduct (Продовольственный товар)
--DigitalProduct (Цифровой товар)
--ServiceProduct (Услуга)
+- Product (Базовый класс)
+- FoodProduct (Продовольственный товар)
+- DigitalProduct (Цифровой товар)
+- ServiceProduct (Услуга)
 
 
 ---
