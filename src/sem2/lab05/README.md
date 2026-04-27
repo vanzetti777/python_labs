@@ -33,110 +33,85 @@
 
 Методы `sort_by(key_func)` и `filter_by(predicate)` в классе `ProductCatalog` принимают функции-стратегии для динамического изменения поведения.
 
-# Сортировка по переданной стратегии
+#### Сортировка по переданной стратегии
 catalog.sort_by(by_price)           # по цене
 catalog.sort_by(by_name)             # по имени
 
-# Фильтрация по переданному предикату
+#### Фильтрация по переданному предикату
 catalog.filter_by(is_in_stock)       # только в наличии
 catalog.filter_by(is_expensive)      # только дорогие
 
-2. Функции высшего порядка
-map() — преобразование коллекции
-python
+### 2. Функции высшего порядка
+- map() — преобразование коллекци
 
-names = catalog.map_to(extract_name)
-prices = catalog.map_to(extract_price)
-strings = catalog.map_to(to_short_string)
+- filter() — фильтрация коллекции
 
-filter() — фильтрация коллекции
-python
+- sorted() — сортировка с ключом
 
-in_stock = list(filter(is_in_stock, catalog.get_all()))
-
-sorted() — сортировка с ключом
-python
-
-sorted_items = sorted(items, key=by_price, reverse=True)
-
-3. lambda-выражения
+### 3. lambda-выражения
 
 Для простых, одноразовых операций:
 python
 
-# lambda для сортировки
-catalog.sort_by(lambda x: x.price, reverse=True)
+- lambda для сортировки - catalog.sort_by(lambda x: x.price, reverse=True)
 
-# lambda для фильтрации
-filtered = list(filter(lambda x: 1000 < x.price < 10000, items))
+- lambda для фильтрации - filtered = list(filter(lambda x: 1000 < x.price < 10000, items))
 
-# lambda в map
-names = list(map(lambda x: x.name, items))
+- lambda в map - names = list(map(lambda x: x.name, items))
 
-4. Фабрики функций (замыкания)
+### 4. Фабрики функций (замыкания)
 
 Функции, создающие другие функции с заданными параметрами:
-Фабрика	Назначение	Пример использования
-make_price_filter(max_price)	Создаёт фильтр по максимальной цене	filter_2000 = make_price_filter(2000)
-make_amount_filter(min_amount)	Создаёт фильтр по минимальному количеству	filter_10 = make_amount_filter(10)
-make_discount_applier(discount_percent)	Создаёт функцию применения скидки	apply_sale = make_discount_applier(0.15)
-5. Паттерн «Стратегия» через callable-объекты
+- make_price_filter(max_price)	Создаёт фильтр по максимальной цене	filter_2000 = make_price_filter(2000)
+- make_amount_filter(min_amount)	Создаёт фильтр по минимальному количеству	filter_10 = make_amount_filter(10)
+- make_discount_applier(discount_percent)	Создаёт функцию применения скидки	apply_sale = make_discount_applier(0.15)
+### 5. Паттерн «Стратегия» через callable-объекты
 
 Классы-стратегии, реализующие метод __call__():
-Класс	Метод __call__()	Назначение
-SortByNameStrategy	возвращает item.name	Стратегия сортировки по имени
-SortByPriceStrategy	возвращает item.price	Стратегия сортировки по цене
-SortByCompositeStrategy	возвращает (price, name)	Составная стратегия
-InStockFilterStrategy	возвращает bool	Стратегия фильтрации по наличию
-CheapFilterStrategy	возвращает bool	Стратегия фильтрации по дешевизне
-DiscountStrategy	возвращает price × (1 - discount)	Стратегия расчёта скидки
+- SortByNameStrategy	возвращает item.name	Стратегия сортировки по имени
+- SortByPriceStrategy	возвращает item.price	Стратегия сортировки по цене
+- SortByCompositeStrategy	возвращает (price, name)	Составная стратегия
+- InStockFilterStrategy	возвращает bool	Стратегия фильтрации по наличию
+- CheapFilterStrategy	возвращает bool	Стратегия фильтрации по дешевизне
+- DiscountStrategy	возвращает price × (1 - discount)	Стратегия расчёта скидки
 
-Пример использования:
-python
-
-# Создание и применение стратегии
-strategy = SortByPriceStrategy()
+#### Создание и применение стратегии
+-strategy = SortByPriceStrategy()
 sorted_items = sorted(catalog.get_all(), key=strategy)
 
-# Смена стратегии (без изменения кода)
+#### Смена стратегии (без изменения кода)
 strategy = SortByNameStrategy()
 sorted_items = sorted(catalog.get_all(), key=strategy)
 
-6. Цепочки операций (Fluent Interface)
+### 6. Цепочки операций (Fluent Interface)
 
 Класс ChainWrapper позволяет строить цепочки операций:
-python
-
-result = (ChainWrapper(catalog)
-    .filter_by(is_available_for_purchase)
-    .sort_by(by_price, reverse=True)
-    .map_to(lambda x: f"{x.name}: {x.price} руб.")
-)
 
 Доступные методы цепочки:
 
-    filter_by(predicate) — фильтрация
+- filter_by(predicate) — фильтрация
 
-    sort_by(key_func, reverse) — сортировка
+- sort_by(key_func, reverse) — сортировка
 
-    apply(func) — применение функции ко всем элементам
+- apply(func) — применение функции ко всем элементам
 
-    map_to(func) — преобразование в список
+- map_to(func) — преобразование в список
 
-    get_result() — получение результата
+- get_result() — получение результата
 
-    to_catalog() — преобразование обратно в ProductCatalog
+- to_catalog() — преобразование обратно в ProductCatalog
 
 7. Методы расширения коллекции ProductCatalog
-Метод	Назначение	Пример
-sort_by(key_func, reverse)	Сортировка по ключевой функции	catalog.sort_by(by_price)
-filter_by(predicate)	Фильтрация по предикату	catalog.filter_by(is_in_stock)
-apply(func)	Применение функции ко всем элементам	catalog.apply(apply_discount)
-map_to(func)	Преобразование в список результатов	names = catalog.map_to(extract_name)
-copy()	Создание поверхностной копии	new_cat = catalog.copy()
-deep_copy()	Создание глубокой копии	new_cat = catalog.deep_copy()
-Демонстрация работы
-Сценарий 1 — Сортировка разными стратегиями
+
+- sort_by(key_func, reverse)	Сортировка по ключевой функции	catalog.sort_by(by_price)
+- filter_by(predicate)	Фильтрация по предикату	catalog.filter_by(is_in_stock)
+- apply(func)	Применение функции ко всем элементам	catalog.apply(apply_discount)
+- map_to(func)	Преобразование в список результатов	names = catalog.map_to(extract_name)
+- copy()	Создание поверхностной копии	new_cat = catalog.copy()
+- deep_copy()	Создание глубокой копии	new_cat = catalog.deep_copy()
+
+
+## Сценарий 1 — Сортировка разными стратегиями
 
 Что демонстрируется:
 
@@ -148,7 +123,7 @@ deep_copy()	Создание глубокой копии	new_cat = catalog.deep_
 
 ![alt text](<../../img/2sem/image copy 18.png>)
 
-Сценарий 2 — Фильтрация разными фильтрами
+## Сценарий 2 — Фильтрация разными фильтрами
 
 Что демонстрируется:
 
@@ -160,7 +135,7 @@ deep_copy()	Создание глубокой копии	new_cat = catalog.deep_
 
 ![alt text](<../../img/2sem/image copy 19.png>)
 
-Сценарий 3 — lambda-выражения и map()
+## Сценарий 3 — lambda-выражения и map()
 
 Что демонстрируется:
 
@@ -174,7 +149,7 @@ deep_copy()	Создание глубокой копии	new_cat = catalog.deep_
 
 ![alt text](<../../img/2sem/image copy 20.png>)
 
-Сценарий 4 — Фабрика функций (замыкания)
+## Сценарий 4 — Фабрика функций (замыкания)
 
 Что демонстрируется:
 
@@ -186,7 +161,7 @@ deep_copy()	Создание глубокой копии	new_cat = catalog.deep_
 
 ![alt text](<../../img/2sem/image copy 21.png>)
 
-Сценарий 5 — Паттерн «Стратегия» (callable-объекты)
+## Сценарий 5 — Паттерн «Стратегия» (callable-объекты)
 
 Что демонстрируется:
 
@@ -200,7 +175,7 @@ deep_copy()	Создание глубокой копии	new_cat = catalog.deep_
 
 ![alt text](<../../img/2sem/image copy 22.png>)
 
-Сценарий 6 — Цепочка операций
+## Сценарий 6 — Цепочка операций
 
 Что демонстрируется:
 
@@ -212,7 +187,7 @@ deep_copy()	Создание глубокой копии	new_cat = catalog.deep_
 
 ![alt text](<../../img/2sem/image copy 23.png>)
 
-Сценарий 7 — Комплексная демонстрация
+## Сценарий 7 — Комплексная демонстрация
 
 Что демонстрируется:
 
