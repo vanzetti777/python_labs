@@ -22,109 +22,51 @@
 
 Контракт для объектов, которые могут предоставить строковое представление.
 
-```python
-class Printable(ABC):
-    @abstractmethod
-    def to_string(self) -> str:
-        """Возвращает строковое представление объекта"""
-        pass
-```
-
-Реализация в классах:
-Класс	Реализация to_string()
-Product	[статус] Название: цена (кол-во шт.)
-FoodProduct	[🍎] Название: цена | Годен до: дата | Свежий: ✓/✗
-DigitalProduct	[💾] Название: цена | размер МБ | Загрузок: N
-ServiceProduct	[🎫] Название: цена | длительность | Записей: N
+**Реализация в классах: to_string()**
+- Product Название: цена (кол-во шт.)
+- FoodProduct Название: цена | Годен до: дата | Свежий: ✓/✗
+- DigitalProduct Название: цена | размер МБ | Загрузок: N
+- ServiceProduct Название: цена | длительность | Записей: N
 
 ### Интерфейс Comparable
 
 Контракт для объектов, поддерживающих сравнение.
 python
 
-```python
-class Comparable(ABC):
-    @abstractmethod
-    def compare_to(self, other: Any) -> int:
-        """
-        Сравнивает текущий объект с другим.
-        Возвращает:
-            отрицательное число, если self < other
-            0, если self == other
-            положительное число, если self > other
-        """
-        pass
-```
-
-Реализация в классах:
-Класс	Критерий сравнения	Пример
-Product	Имя товара (алфавитный порядок)	"Апельсин" < "Банан" → -1
-FoodProduct	Срок годности (чем раньше просрочка, тем "меньше")	"2026-05-01" < "2026-05-10" → -1
-DigitalProduct	Размер файла	500 МБ < 1500 МБ → -1
-ServiceProduct	Длительность услуги	30 мин < 60 мин → -1
+**Реализация в классах:**
+- Product	Имя товара (алфавитный порядок)	"Апельсин" < "Банан" → -1
+- FoodProduct	Срок годности (чем раньше просрочка, тем "меньше")	"2026-05-01" < "2026-05-10" → -1
+- DigitalProduct	Размер файла	500 МБ < 1500 МБ → -1
+- ServiceProduct	Длительность услуги	30 мин < 60 мин → -1
 
 ### Интерфейс Discountable
 
 Контракт для объектов, к которым можно применить скидку.
 python
 
-```python
-class Discountable(ABC):
-    @abstractmethod
-    def calculate_price_with_discount(self, discount: float = None) -> float:
-        """Рассчитывает цену с учётом скидки"""
-        pass
-    
-    @abstractmethod
-    def get_base_price(self) -> float:
-        """Возвращает базовую цену"""
-        pass
-```
-
-Реализация в классах (полиморфизм):
-Класс	Формула расчёта	Особенность
-Product	price × (1 - discount) × (1 + tax_rate)	Стандартная скидка 5%
-FoodProduct	Скидка увеличивается на 30% при сроке ≤ 3 дней	Максимальная скидка 70%
-DigitalProduct	Скидка уменьшается в 2 раза	Нет затрат на хранение
-ServiceProduct	Скидка уменьшается на 30%	Требуется предоплата
+**Реализация в классах (полиморфизм):**
+- Product	price × (1 - discount) × (1 + tax_rate)	Стандартная скидка 5%
+- FoodProduct	Скидка увеличивается на 30% при сроке ≤ 3 дней	Максимальная скидка 70%
+- DigitalProduct	Скидка уменьшается в 2 раза	Нет затрат на хранение
+- ServiceProduct	Скидка уменьшается на 30%	Требуется предоплата
 ### Интерфейс StockManageable
 
 Контракт для управления складскими запасами.
 python
 
-```python
-class StockManageable(ABC):
-    @abstractmethod
-    def restock(self, amount: int) -> None:
-        """Пополнение запасов"""
-        pass
-    
-    @abstractmethod
-    def purchase(self, amount: int = 1) -> float:
-        """Покупка товара"""
-        pass
-    
-    @abstractmethod
-    def can_be_sold(self, requested_amount: int = 1) -> tuple:
-        """Проверка возможности продажи"""
-        pass
-```
+**Реализация в классах:Особенность can_be_sold()**
+- Product	Проверка статуса и количества
+- FoodProduct	Дополнительная проверка свежести
+- DigitalProduct	Всегда доступен (цифровая копия)
+- ServiceProduct	Всегда доступен (кроме снятых с производства)
 
-Реализация в классах:
-Класс	Особенность can_be_sold()
-Product	Проверка статуса и количества
-FoodProduct	Дополнительная проверка свежести
-DigitalProduct	Всегда доступен (цифровая копия)
-ServiceProduct	Всегда доступен (кроме снятых с производства)
-Расширение коллекции ProductCatalog
+**Расширение коллекции ProductCatalog**
 
-В класс ProductCatalog (из ЛР-2) добавлены новые методы для работы через интерфейсы:
-Метод	Назначение
-get_printable_items()	Возвращает все товары, реализующие Printable
-get_comparable_items()	Возвращает все товары, реализующие Comparable
-print_all()	Массовая печать через интерфейс Printable
-sort_by_comparable()	Сортировка через интерфейс Comparable
-filter_by_interface(type)	Универсальная фильтрация по интерфейсу
+- get_printable_items()	Возвращает все товары, реализующие Printable
+- get_comparable_items()	Возвращает все товары, реализующие Comparable
+- print_all()	Массовая печать через интерфейс Printable
+- sort_by_comparable()	Сортировка через интерфейс Comparable
+- filter_by_interface(type)	Универсальная фильтрация по интерфейсу
 
 ### Сценарий 1 — Интерфейс как тип (полиморфизм)
 
