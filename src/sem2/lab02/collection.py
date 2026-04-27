@@ -23,7 +23,7 @@ class ProductCatalog:
             raise ValueError("Товар не найден в коллекции")
         
         self._items.remove(item)
-    
+      
     def remove_at(self, index: int) -> Product:
 
         if index < 0 or index >= len(self._items):

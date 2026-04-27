@@ -1,0 +1,56 @@
+'''
+Теория 
+Атрибут класса - для чего то общего, что будет едино для всех объектов
+Атрибут экземпляра - личные характеристики каждого объекта
+Например атрибут класса Товар- скидка, атрибут экземпляра Товар- его имя и состояние 
+'''
+
+class Product:
+    #это экземпляры класса
+    discount = 0.05
+    NDS = 0.20
+    def __init__(self, name: str, price: float):
+        # это атрибуты экземпляра
+        self._name(name)
+        self._price(price)
+    
+    def calculate(self):
+        discount = self.discount  
+        return self.price * (1 - discount) * (1 + Product.NDS)
+# будет меняться цена самого товара,но сидку и ндс мы задаем общие
+
+'''Практика'''
+
+class Product:
+    def __init__(self, name: str, price: float):
+        self._name = name
+        self._price = price
+
+    @property
+    def name(self):
+        return self._name
+
+    def calculate_price(self) -> float:
+        return self._price
+
+    def __str__(self):
+        return f"{self._name}: {self.calculate_price():.2f} руб."
+
+
+class DigitalProduct(Product):
+    def __init__(self, name: str, price: float, file_size_mb: int):
+        if file_size_mb <= 0:
+            raise ValueError("цена должна быть >0")
+        
+        super().__init__(name, price)
+        
+        self._file_size_mb = file_size_mb
+
+    def calculate_price(self) -> float:
+        oldprice = super().calculate_price()
+        if self._file_size_mb > 100:
+            return oldprice * 0.9  
+        return oldprice
+
+    def get_info(self) -> str:
+        return f"Цифровой {self._name} {self._file_size_mb} Mb"
