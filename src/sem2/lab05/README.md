@@ -1,12 +1,6 @@
 # Лабораторная работа №5
 ## Функции как аргументы. Стратегии и делегаты (Python)
 
-### Выбранная предметная область
-
-**Интернет-магазин (на основе классов Product и ProductCatalog из ЛР №2-4)**
-
----
-
 ## Реализованные функции-стратегии и обработчики
 
 | Категория | Функция/Стратегия | Назначение |
@@ -34,12 +28,10 @@
 Методы `sort_by(key_func)` и `filter_by(predicate)` в классе `ProductCatalog` принимают функции-стратегии для динамического изменения поведения.
 
 #### Сортировка по переданной стратегии
-catalog.sort_by(by_price)           # по цене
-catalog.sort_by(by_name)             # по имени
+catalog.sort_by(by_price)/catalog.sort_by(by_name)             
 
 #### Фильтрация по переданному предикату
-catalog.filter_by(is_in_stock)       # только в наличии
-catalog.filter_by(is_expensive)      # только дорогие
+catalog.filter_by(is_in_stock)/catalog.filter_by(is_expensive)      
 
 ### 2. Функции высшего порядка
 - map() — преобразование коллекци
@@ -62,9 +54,9 @@ python
 ### 4. Фабрики функций (замыкания)
 
 Функции, создающие другие функции с заданными параметрами:
-- make_price_filter(max_price)	Создаёт фильтр по максимальной цене	filter_2000 = make_price_filter(2000)
-- make_amount_filter(min_amount)	Создаёт фильтр по минимальному количеству	filter_10 = make_amount_filter(10)
-- make_discount_applier(discount_percent)	Создаёт функцию применения скидки	apply_sale = make_discount_applier(0.15)
+- make_price_filter(max_price)	Создаёт фильтр по максимальной цене	
+- make_amount_filter(min_amount)	Создаёт фильтр по минимальному количеству	
+- make_discount_applier(discount_percent)	Создаёт функцию применения скидки	
 ### 5. Паттерн «Стратегия» через callable-объекты
 
 Классы-стратегии, реализующие метод __call__():
@@ -74,14 +66,6 @@ python
 - InStockFilterStrategy	возвращает bool	Стратегия фильтрации по наличию
 - CheapFilterStrategy	возвращает bool	Стратегия фильтрации по дешевизне
 - DiscountStrategy	возвращает price × (1 - discount)	Стратегия расчёта скидки
-
-#### Создание и применение стратегии
--strategy = SortByPriceStrategy()
-sorted_items = sorted(catalog.get_all(), key=strategy)
-
-#### Смена стратегии (без изменения кода)
-strategy = SortByNameStrategy()
-sorted_items = sorted(catalog.get_all(), key=strategy)
 
 ### 6. Цепочки операций (Fluent Interface)
 
@@ -101,14 +85,14 @@ sorted_items = sorted(catalog.get_all(), key=strategy)
 
 - to_catalog() — преобразование обратно в ProductCatalog
 
-7. Методы расширения коллекции ProductCatalog
+### 7. Методы расширения коллекции ProductCatalog
 
-- sort_by(key_func, reverse)	Сортировка по ключевой функции	catalog.sort_by(by_price)
-- filter_by(predicate)	Фильтрация по предикату	catalog.filter_by(is_in_stock)
-- apply(func)	Применение функции ко всем элементам	catalog.apply(apply_discount)
-- map_to(func)	Преобразование в список результатов	names = catalog.map_to(extract_name)
-- copy()	Создание поверхностной копии	new_cat = catalog.copy()
-- deep_copy()	Создание глубокой копии	new_cat = catalog.deep_copy()
+- sort_by(key_func, reverse)	Сортировка по ключевой функции
+- filter_by(predicate)	Фильтрация по предикату	
+- apply(func)	Применение функции ко всем элементам	
+- map_to(func)	Преобразование в список результатов	
+- copy()	Создание поверхностной копии	
+- deep_copy()	Создание глубокой копии	
 
 
 ## Сценарий 1 — Сортировка разными стратегиями
