@@ -33,7 +33,6 @@
 
 Методы `sort_by(key_func)` и `filter_by(predicate)` в классе `ProductCatalog` принимают функции-стратегии для динамического изменения поведения.
 
-```python
 # Сортировка по переданной стратегии
 catalog.sort_by(by_price)           # по цене
 catalog.sort_by(by_name)             # по имени
