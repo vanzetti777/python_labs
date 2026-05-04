@@ -1,330 +1,195 @@
-"""
-Демонстрация работы ЛР-5
+"""Демонстрация работы лабораторной работы №5
+Темы: функции как аргументы, стратегии, map/filter/lambda, цепочки операций
 """
 
 import sys
 import os
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
-from sem2.lab05.strategies import (
-    by_name, by_price, by_price_then_name, by_status_priority,
-    is_expensive, is_cheap, is_in_stock, is_available_for_purchase,
-    make_price_filter, make_discount_applier,
-    SortByNameStrategy, SortByPriceStrategy, CheapFilterStrategy,
-    DiscountStrategy,
-    extract_name, extract_price, to_short_string, apply_percent_discount
-)
-from sem2.lab05.collection import ProductCatalog, ChainWrapper
-
-# Используем только Product из lab02
+from sem2.lab05.collection import ProductCatalog
 from sem2.lab02.model import Product
+from sem2.lab05 import strategies as st
 
 
-def setup_catalog() -> ProductCatalog:
-    """Создаёт и наполняет каталог тестовыми товарами."""
+def create_demo_catalog() -> ProductCatalog:
+    """Создание тестовой коллекции из 7 товаров"""
     catalog = ProductCatalog()
     
-    # Только обычные товары (Product из lab02)
-    catalog.add(Product("Ноутбук", 75000, 5, "in_stock"))
-    catalog.add(Product("Мышь", 1200, 50, "in_stock"))
-    catalog.add(Product("Клавиатура", 3500, 0, "out_of_stock"))
-    catalog.add(Product("Монитор", 25000, 3, "in_stock"))
-    catalog.add(Product("Принтер", 18000, 0, "discontinued"))
-    catalog.add(Product("Наушники", 2500, 10, "in_stock"))
-    catalog.add(Product("Коврик для мыши", 500, 100, "in_stock"))
-    catalog.add(Product("Веб-камера", 4500, 0, "preorder"))
+    products = [
+        Product("Ноутбук", 75000, 5, "in_stock"),
+        Product("Мышь", 1500, 20, "in_stock"),
+        Product("Клавиатура", 3500, 0, "out_of_stock"),
+        Product("Монитор", 25000, 3, "in_stock"),
+        Product("Наушники", 5000, 8, "preorder"),
+        Product("Коврик", 800, 15, "in_stock"),
+        Product("Принтер", 12000, 0, "discontinued")
+    ]
+    
+    for p in products:
+        try:
+            catalog.add(p)
+        except ValueError as e:
+            print(f"  Предупреждение: {e}")
     
     return catalog
 
 
-def print_catalog(catalog: ProductCatalog, title: str = "Каталог"):
-    """Выводит содержимое каталога."""
+def print_catalog(catalog: ProductCatalog, title: str = "Товары"):
+    """Красивый вывод каталога"""
+    items = catalog.get_all()
     print(f"\n{title}:")
-    print("-" * 55)
-    for item in catalog.get_all():
-        name = by_name(item)
-        price = by_price(item)
-        status = item.status
-        amount = item.amount
-        print(f"  {name:20} | {price:8.2f} руб. | {status:12} | {amount:3} шт.")
-    print(f"  Всего: {len(catalog)} товаров")
+    if not items:
+        print("  (пусто)")
+    else:
+        for i, product in enumerate(items, 1):
+            status = product.status
+            amount = product.amount
+            print(f"  {i}. {product.name} - {product.price} руб. (статус: {status}, кол-во: {amount})")
 
 
-def scenario_1_sorting():
-    """Демонстрация сортировки разными стратегиями."""
-    print("\n" + "-" * 55)
-    print("СЦЕНАРИЙ 1: СОРТИРОВКА РАЗЛИЧНЫМИ СТРАТЕГИЯМИ")
-    print("-" * 55)
+def scenario_3_basics():
+    """Сценарий 1 (оценка 3): Функции сортировки и фильтрации"""
+    print("\n" + "-"*70)
+    print(" СЦЕНАРИЙ 1 (оценка 3): Функции сортировки и фильтрации")
+    print("-"*70)
     
-    catalog = setup_catalog()
+    # 1.1 Три стратегии сортировки
+    print("\n1.1 Три стратегии сортировки:")
     
-    print("\n1. Сортировка по имени (by_name):")
-    catalog_copy = catalog.copy()
-    catalog_copy.sort_by(by_name)
-    for item in catalog_copy.get_all():
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
+    catalog_price = create_demo_catalog()
+    catalog_price.sort_by(st.by_price)
+    print_catalog(catalog_price, "  Сортировка по цене (by_price)")
     
-    print("\n2. Сортировка по цене (by_price):")
-    catalog_copy = catalog.copy()
-    catalog_copy.sort_by(by_price)
-    for item in catalog_copy.get_all():
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
+    catalog_name = create_demo_catalog()
+    catalog_name.sort_by(st.by_name)
+    print_catalog(catalog_name, "  Сортировка по имени (by_name)")
     
-    print("\n3. Сортировка по статусу (by_status_priority):")
-    catalog_copy = catalog.copy()
-    catalog_copy.sort_by(by_status_priority)
-    for item in catalog_copy.get_all():
-        print(f"   {item.status:12} | {by_name(item):20}")
+    catalog_composite = create_demo_catalog()
+    catalog_composite.sort_by(st.by_price_then_name)
+    print_catalog(catalog_composite, "  Составная сортировка (цена + имя)")
     
-    print("\n4. Составная сортировка (цена + имя):")
-    catalog_copy = catalog.copy()
-    catalog_copy.sort_by(by_price_then_name)
-    for item in catalog_copy.get_all():
-        print(f"   {by_price(item):8.2f} руб. — {by_name(item):20}")
+    # 1.2 Две функции фильтрации
+    print("\n1.2 Две функции фильтрации:")
+    catalog = create_demo_catalog()
+    
+    in_stock = catalog.filter_by(st.is_in_stock)
+    print_catalog(in_stock, "  Фильтр 1: Товары в наличии (is_in_stock)")
+    
+    expensive = catalog.filter_by(st.is_expensive)
+    print_catalog(expensive, "  Фильтр 2: Дорогие товары >1000 руб. (is_expensive)")
+    
+    # 1.3 Встроенная filter()
+    print("\n1.3 Встроенная функция filter():")
+    all_products = catalog.get_all()
+    
+    cheap_products = list(filter(lambda p: p.price < 2000, all_products))
+    print(f"  filter(lambda p: p.price < 2000): {[p.name for p in cheap_products]}")
+    
+    available = list(filter(st.is_in_stock, all_products))
+    print(f"  filter(st.is_in_stock): {[p.name for p in available]}")
 
 
-def scenario_2_filtering():
-    """Демонстрация фильтрации разными фильтрами."""
-    print("\n" + "-" * 55)
-    print("СЦЕНАРИЙ 2: ФИЛЬТРАЦИЯ РАЗЛИЧНЫМИ ФИЛЬТРАМИ")
-    print("-" * 55)
+def scenario_4_map_lambda():
+    """Сценарий 2 (оценка 4): map(), lambda, фабрика функций"""
+    print("\n" + "-"*70)
+    print(" СЦЕНАРИЙ 2 (оценка 4): map(), lambda и фабрика функций")
+    print("-"*70)
     
-    catalog = setup_catalog()
-    print_catalog(catalog, "Исходный каталог")
+    catalog = create_demo_catalog()
+    all_products = catalog.get_all()
     
-    print("\n1. Фильтр 'дороже 1000 руб.' (is_expensive):")
-    expensive = catalog.copy().filter_by(is_expensive)
-    for item in expensive.get_all():
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
-    print(f"   (найдено: {len(expensive)} из {len(catalog)} товаров)")
+    # 2.1 map()
+    print("\n2.1 Функция map():")
+    names = list(map(st.extract_name, all_products))
+    print(f"  map(st.extract_name): {names}")
     
-    print("\n2. Фильтр 'дешевле 500 руб.' (is_cheap):")
-    cheap = catalog.copy().filter_by(is_cheap)
-    for item in cheap.get_all():
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
-    print(f"   (найдено: {len(cheap)} из {len(catalog)} товаров)")
+    prices_with_tax = list(map(lambda p: p.price * 1.2, all_products))
+    print(f"  map(lambda p: p.price * 1.2): {prices_with_tax[:3]}...")
     
-    print("\n3. Фильтр 'в наличии' (is_in_stock):")
-    in_stock = catalog.copy().filter_by(is_in_stock)
-    for item in in_stock.get_all():
-        print(f"   {by_name(item):20} — статус: {item.status}, кол-во: {item.amount}")
-    print(f"   (найдено: {len(in_stock)} из {len(catalog)} товаров)")
+    # 2.2 Lambda
+    print("\n2.2 Lambda-выражения:")
+    temp = create_demo_catalog()
+    temp.sort(key=lambda x: x.amount)
+    print(f"  sort(lambda x: x.amount): {[f'{p.name}({p.amount})' for p in temp.get_all()[:3]]}")
     
-    print("\n4. Фильтр 'доступен для покупки' (is_available_for_purchase):")
-    available = catalog.copy().filter_by(is_available_for_purchase)
-    for item in available.get_all():
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
-    print(f"   (найдено: {len(available)} из {len(catalog)} товаров)")
+    preorder = list(filter(lambda p: p.status == "preorder", all_products))
+    print(f"  filter(lambda p: p.status == 'preorder'): {[p.name for p in preorder]}")
+    
+    # 2.3 Фабрика функций
+    print("\n2.3 Фабрика функций:")
+    price_filter = st.make_price_filter(3000)
+    cheap_items = catalog.filter_by(price_filter)
+    print(f"  make_price_filter(3000): {[p.name for p in cheap_items.get_all()]}")
 
 
-def scenario_3_lambda_and_map():
-    """Демонстрация lambda-выражений и функции map."""
-    print("\n" + "-" * 55)
-    print("СЦЕНАРИЙ 3: LAMBDA И MAP")
-    print("-" * 55)
+def scenario_5_chain_strategy():
+    """Сценарий 3 (оценка 5): Паттерн Стратегия и цепочки операций"""
+    print("\n" + "-"*70)
+    print(" СЦЕНАРИЙ 3 (оценка 5): Паттерн Стратегия и цепочки операций")
+    print("-"*70)
     
-    catalog = setup_catalog()
-    items = catalog.get_all()
+    catalog = create_demo_catalog()
+    all_products = catalog.get_all()
     
-    print("\n1. Сортировка с lambda (по цене, обратный порядок):")
-    sorted_items = sorted(items, key=lambda x: by_price(x), reverse=True)
-    for item in sorted_items[:5]:
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
+    # 3.1 Callable-стратегии
+    print("\n3.1 Callable-объекты (классы-стратегии):")
     
-    print("\n2. Фильтрация с lambda (цена между 1000 и 10000):")
-    filtered = list(filter(lambda x: 1000 < by_price(x) < 10000, items))
-    for item in filtered:
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
+    by_name_strategy = create_demo_catalog()
+    by_name_strategy.sort(key=st.SortByNameStrategy())
+    print(f"  SortByNameStrategy(): {[p.name for p in by_name_strategy.get_all()[:3]]}")
     
-    print("\n3. map: извлечение имён товаров:")
-    names = list(map(lambda x: by_name(x), items))
-    print(f"   {names}")
+    cheap_filter = st.CheapFilterStrategy()
+    cheap_items = catalog.filter_by(cheap_filter)
+    print(f"  CheapFilterStrategy(): {len(cheap_items.get_all())} товаров дешевле 500 руб.")
     
-    print("\n4. map: цены со скидкой 10%:")
-    discounted = list(map(lambda x: round(by_price(x) * 0.9, 2), items))
-    for name, price in zip(names[:5], discounted[:5]):
-        print(f"   {name:20} -> {price:.2f} руб.")
+    discount = st.DiscountStrategy(0.2)
+    print(f"  DiscountStrategy(0.2): {discount}")
+    if all_products:
+        print(f"    Скидка на {all_products[0].name}: {all_products[0].price} → {discount(all_products[0]):.2f}")
     
-    print("\n5. Сравнение: lambda vs именованная функция:")
-    by_name_lambda = sorted(items, key=lambda x: by_name(x))
-    print(f"   lambda: {[by_name(x) for x in by_name_lambda[:3]]}")
-    by_name_named = sorted(items, key=by_name)
-    print(f"   named : {[by_name(x) for x in by_name_named[:3]]}")
-    print("   -> Результаты идентичны!")
-
-
-def scenario_4_factory():
-    """Демонстрация фабрики функций."""
-    print("\n" + "-" * 55)
-    print("СЦЕНАРИЙ 4: ФАБРИКА ФУНКЦИЙ (ЗАМЫКАНИЯ)")
-    print("-" * 55)
+    # 3.2 apply() - с пропуском discontinued товаров (ИСПРАВЛЕНО!)
+    print("\n3.2 Метод apply():")
+    apply_cat = create_demo_catalog()
+    print(f"  До apply(): {[f'{p.name}={p.price}' for p in apply_cat.get_all()[:3]]}")
+    # Пропускаем товары со статусом discontinued
+    for p in apply_cat.get_all():
+        if p.status != 'discontinued':
+            p.price = p.price * 0.9
+    print(f"  После apply(): {[f'{p.name}={p.price:.0f}' for p in apply_cat.get_all()[:3]]}")
     
-    catalog = setup_catalog()
+    # 3.3 Цепочка операций (is_in_stock уже исключает discontinued)
+    print("\n3.3 Цепочка операций (filter → sort → apply):")
+    chain = (create_demo_catalog()
+        .filter_by(st.is_in_stock)
+        .sort_by(st.by_price)
+        .apply(lambda p: setattr(p, 'price', p.price * 0.95) if p.price > 5000 else None)
+    )
+    print_catalog(chain, "  Результат цепочки")
     
-    print("\n1. Создание фильтра 'цена <= 2000 руб.' через фабрику:")
-    cheap_filter = make_price_filter(2000)
-    filtered = [item for item in catalog.get_all() if cheap_filter(item)]
-    for item in filtered:
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
-    
-    print("\n2. Фильтры с разными порогами (одна фабрика):")
-    for threshold in [500, 1000, 2000, 5000, 10000]:
-        price_filter = make_price_filter(threshold)
-        count = sum(1 for item in catalog.get_all() if price_filter(item))
-        print(f"   Цена <= {threshold:5d} руб.: {count} товаров")
-    
-    print("\n3. Применение скидки 15% через фабрику:")
-    discount_applier = make_discount_applier(0.15)
-    catalog_copy = catalog.deep_copy()
-    for item in catalog_copy.get_all()[:4]:
-        old_price = by_price(item)
-        result = discount_applier(item)
-        print(f"   {result}")
-
-
-def scenario_5_strategy_pattern():
-    """Демонстрация паттерна Стратегия через callable-объекты."""
-    print("\n" + "-" * 55)
-    print("СЦЕНАРИЙ 5: ПАТТЕРН СТРАТЕГИЯ (CALLABLE-ОБЪЕКТЫ)")
-    print("-" * 55)
-    
-    catalog = setup_catalog()
-    items = catalog.get_all()
-    
-    print("\n1. Стратегия сортировки SortByNameStrategy:")
-    strategy = SortByNameStrategy()
-    sorted_items = sorted(items, key=strategy)
-    for item in sorted_items[:5]:
-        print(f"   {by_name(item)}")
-    
-    print("\n2. Смена стратегии на SortByPriceStrategy:")
-    strategy = SortByPriceStrategy()
-    sorted_items = sorted(items, key=strategy)
-    for item in sorted_items[:5]:
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
-    
-    print("\n3. Стратегия фильтрации CheapFilterStrategy (цена < 500):")
-    strategy = CheapFilterStrategy()
-    filtered = [item for item in items if strategy(item)]
-    for item in filtered:
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
-    
-    print("\n4. Стратегия скидки DiscountStrategy(20%):")
-    discount = DiscountStrategy(0.20)
-    for item in items[:4]:
-        original = by_price(item)
-        discounted = discount(item)
-        print(f"   {by_name(item):20}: {original:.2f} -> {discounted:.2f} руб.")
-
-
-def scenario_6_chaining():
-    """Демонстрация цепочки операций."""
-    print("\n" + "-" * 55)
-    print("СЦЕНАРИЙ 6: ЦЕПОЧКА ОПЕРАЦИЙ")
-    print("-" * 55)
-    
-    catalog = setup_catalog()
-    print_catalog(catalog, "Исходный каталог")
-    
-    print("\n1. Цепочка через методы коллекции (in-place):")
-    result = catalog.copy()
-    result.filter_by(is_in_stock).sort_by(by_price)
-    print(f"   Товары в наличии, отсортированные по цене:")
-    for item in result.get_all():
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
-    
-    print("\n2. Цепочка через ChainWrapper (не изменяет исходный):")
-    result_items = (ChainWrapper(catalog)
-                    .filter_by(is_available_for_purchase)
-                    .sort_by(by_price, reverse=True)
-                    .map_to(lambda x: f"{by_name(x)} — {by_price(x):.2f} руб."))
-    for item in result_items:
-        print(f"   {item}")
-    
-    print("\n3. Полная цепочка filter -> sort -> apply:")
-    chain_catalog = catalog.copy()
-    
-    def apply_10_discount(item):
-        if hasattr(item, '_price'):
-            item._price = item._price * 0.9
-    
-    chain_catalog.filter_by(lambda x: by_price(x) > 1000) \
-                 .sort_by(by_price, reverse=True) \
-                 .apply(apply_10_discount)
-    
-    print("   Товары дороже 1000 руб. после скидки 10%:")
-    for item in chain_catalog.get_all():
-        print(f"   {by_name(item):20} — {by_price(item):.2f} руб.")
-
-
-def scenario_7_comprehensive():
-    """Комплексная демонстрация."""
-    print("\n" + "-" * 55)
-    print("СЦЕНАРИЙ 7: КОМПЛЕКСНАЯ ДЕМОНСТРАЦИЯ")
-    print("-" * 55)
-    
-    catalog = setup_catalog()
-    
-    print("\n1. map преобразования:")
-    print(f"   Имена: {catalog.map_to(extract_name)}")
-    print(f"   Цены: {catalog.map_to(extract_price)}")
-    
-    print("\n2. Короткое представление (map + to_short_string):")
-    for s in catalog.map_to(to_short_string)[:5]:
-        print(f"   {s}")
-    
-    print("\n3. Применение скидки 5% через map:")
-    discount_5 = apply_percent_discount(0.05)
-    names = catalog.map_to(extract_name)
-    old_prices = catalog.map_to(extract_price)
-    new_prices = catalog.map_to(discount_5)
-    for name, old, new in zip(names[:5], old_prices[:5], new_prices[:5]):
-        print(f"   {name}: {old:.2f} -> {new:.2f} руб.")
-    
-    print("\n4. Фильтрация с разными порогами:")
-    for threshold in [200, 500, 1000, 2000]:
-        price_filter = make_price_filter(threshold)
-        count = len([x for x in catalog.get_all() if price_filter(x)])
-        print(f"   Цена <= {threshold:4d} руб.: {count} товаров")
+    # 3.4 Замена стратегии
+    print("\n3.4 Замена стратегии без изменения кода:")
+    swap = create_demo_catalog()
+    print(f"  Исходный порядок: {[p.name for p in swap.get_all()[:3]]}")
+    swap.sort_by(st.by_price)
+    print(f"  По цене: {[p.name for p in swap.get_all()[:3]]}")
+    swap.sort_by(st.by_name)
+    print(f"  По имени: {[p.name for p in swap.get_all()[:3]]}")
 
 
 def main():
-    """Запуск всех сценариев."""
-    print("\n" + "=" * 55)
-    print("ЛАБОРАТОРНАЯ РАБОТА №5")
-    print("Функции как аргументы. Стратегии и делегаты.")
-    print("=" * 55)
+    print("-"*70)
+    print(" ЛАБОРАТОРНАЯ РАБОТА №5")
+    print(" Функции как аргументы. Стратегии и делегаты.")
+    print("-"*70)
     
-    scenarios = [
-        scenario_1_sorting,
-        scenario_2_filtering,
-        scenario_3_lambda_and_map,
-        scenario_4_factory,
-        scenario_5_strategy_pattern,
-        scenario_6_chaining,
-        scenario_7_comprehensive,
-    ]
+    scenario_3_basics()
+    scenario_4_map_lambda()
+    scenario_5_chain_strategy()
     
-    for scenario in scenarios:
-        try:
-            scenario()
-        except Exception as e:
-            print(f"\nОшибка: {e}")
-            import traceback
-            traceback.print_exc()
-    
-    print("\n" + "=" * 55)
-    print("ИТОГИ ВЫПОЛНЕНИЯ")
-    print("=" * 55)
-    print("\nРеализованные концепции:")
-    print("  1. Передача функций как аргументов (sort_by, filter_by)")
-    print("  2. lambda-выражения для простых операций")
-    print("  3. Встроенные функции: map, filter, sorted")
-    print("  4. Фабрики функций (замыкания): make_price_filter")
-    print("  5. Паттерн Стратегия через callable-объекты")
-    print("  6. Цепочки операций (fluent interface)")
-    print("\nДемонстрация завершена.")
+    print("\n" + "-"*70)
+    print(" Демонстрация завершена!")
+    print("-"*70)
 
 
 if __name__ == "__main__":
