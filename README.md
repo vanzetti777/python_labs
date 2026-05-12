@@ -6,4 +6,6 @@
 
 [LAB04](src/sem2/lab04/README.md)
 
-[LAB06](src/sem2/lab05/README.md)
+[LAB05](src/sem2/lab05/README.md)
+
+[LAB06](src/sem2/lab06/README.md)
